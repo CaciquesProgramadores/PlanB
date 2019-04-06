@@ -6,28 +6,36 @@ require 'rbnacl'
 
 ## LastWillFile to be leaved
 module LastWillFile
-  ## Holds a full secret document
-  class Document
-    STORE_DIR = 'app/db/store/'
+  ## Inheritor to be used by many objects and classes
+  class Inheritor
+    STORE_DIR = 'app/db/store/inheritors'
 
-    # Create a new document by passing in hash of attributes
+    # Create a new note by passing in hash of attributes
     def initialize(new_document)
       @id          = new_document['id'] || new_id
-      @filename    = new_document['filename']
       @description = new_document['description']
-      @content     = new_document['content']
+      @relantionship = new_document['relantionship']
+      @emails       = new_document['emails']
+      @phones     = new_document['phones']
+      @pgp     = new_document['pgp']
+      @fullname     = new_document['fullname']
+      @nickname     = new_document['nickname']
     end
 
-    attr_reader :id, :filename, :description, :content
+    attr_reader :id, :description, :relantionship, :emails, :phones, :pgp, :fullname, :nickname
 
     def to_json(options = {})
       JSON(
         {
           type: 'document',
           id: id,
-          filename: filename,
           description: description,
-          content: content
+          relantionship: relantionship,
+          emails: emails,
+          phones: phones,
+          pgp: pgp,
+          fullname: fullname,
+          nickname: nickname
         },
         options
       )
@@ -38,18 +46,18 @@ module LastWillFile
       Dir.mkdir(STORE_DIR) unless Dir.exist? STORE_DIR
     end
 
-    # Stores document in file store
+    # Stores a person in a document in file store
     def save
       File.write(STORE_DIR + id + '.txt', to_json)
     end
 
-    # Query method to find one document
+    # Query method to find one person
     def self.find(find_id)
       document_file = File.read(STORE_DIR + find_id + '.txt')
       Document.new JSON.parse(document_file)
     end
 
-    # Query method to retrieve index of all documents
+    # Query method to retrieve index of all people
     def self.all
       Dir.glob(STORE_DIR + '*.txt').map do |file|
         file.match(/#{Regexp.quote(STORE_DIR)}(.*)\.txt/)[1]
