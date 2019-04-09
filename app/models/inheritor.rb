@@ -5,10 +5,9 @@ require 'base64'
 require 'rbnacl'
 
 ## LastWillFile to be leaved
-module LastWillFile
   ## Inheritor to be used by many objects and classes
   class Inheritor
-    STORE_DIR = 'app/db/store/inheritors'
+    STORE_DIR = 'app/db/store/inheritors/'
 
     # Create a new note by passing in hash of attributes
     def initialize(new_document)
@@ -71,4 +70,3 @@ module LastWillFile
       Base64.urlsafe_encode64(RbNaCl::Hash.sha256(timestamp))[0..9]
     end
   end
-end

@@ -5,10 +5,10 @@ require 'base64'
 require 'rbnacl'
 
 ## LastWillFile to be leaved
-module LastWillFile
+# module LastWillFile
   ## Notes to be leaved
   class Note
-    STORE_DIR = 'app/db/store/notes'
+    STORE_DIR = 'app/db/store/notes/'
 
     # Create a new note by passing in hash of attributes
     def initialize(new_document)
@@ -64,4 +64,4 @@ module LastWillFile
       Base64.urlsafe_encode64(RbNaCl::Hash.sha256(timestamp))[0..9]
     end
   end
-end
+# end

@@ -5,7 +5,7 @@ require 'base64'
 require 'rbnacl'
 
 ## LastWillFile to be leaved
-module LastWillFile
+#module LastWillFile
   ## Holds a full secret document
   class Document
     STORE_DIR = 'app/db/store/'
@@ -63,4 +63,4 @@ module LastWillFile
       Base64.urlsafe_encode64(RbNaCl::Hash.sha256(timestamp))[0..9]
     end
   end
-end
+#end
