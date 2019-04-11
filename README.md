@@ -23,7 +23,7 @@ It includes the following features:
    - libsodium32 -rbnacl
    - see gem file for full detail
  
-# API methods setup:
+# API route and methods:
   
 All routes return Json
 - GET /: Root route shows if Web API is running
@@ -31,12 +31,11 @@ All routes return Json
 - GET api/v1/document/[ID]: returns details about a single document with given ID
 - POST api/v1/document/: creates a new document
 
-- GET /: Root route shows if Web API is running
+
 - GET api/v1/inheritors/: returns all confiugration IDs
 - GET api/v1/inheritor/[ID]: returns details about a single inheritor with given ID
 - POST api/v1/inhertor/: creates a new document
 
-- GET /: Root route shows if Web API is running
 - GET api/v1/notes/: returns all confiugration IDs
 - GET api/v1/note/[ID]: returns details about a single note with given ID
 - POST api/v1/note/: creates a new document
