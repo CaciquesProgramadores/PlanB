@@ -21,8 +21,7 @@ It includes the following features:
  Other Required packages:
    - Rack 
    - libsodium18 -rbnacl
-   - base on ISS secuity repo @ https://github.com/ISS-Security/credence-api/tree/0_api_mvc
-  
+   - base on soumyaray ISS secuity repo @ https://github.com/ISS-Security/credence-api/tree/0_api_mvc
   
   Developers email contacts:
    - Jonathan Olivia - 
