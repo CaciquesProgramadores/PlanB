@@ -11,6 +11,16 @@ It includes the following features:
   - use recent and reliable hashing, encryption and decryption algorithms
   - have both Web and mobile UI
   - etc..
+ 
+ Required development enviroment:
+  - Ruby 2.6.2
+  - Roda framework -v 3.18
+  - MySql/POSTREGSQL database
+  - Flutter /dart mobile platform.
   
+  
+  Developers email contacts:
+    Jonathan Olivia - 
+    Teaka Moaniba - esamgel@gmail.com
   
 
