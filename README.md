@@ -20,12 +20,31 @@ It includes the following features:
   
  Other Required packages:
    - Rack 
-   - libsodium18 -rbnacl
+   - libsodium32 -rbnacl
    - see gem file for full detail
+ 
+# API methods setup:
   
-  Developers email contacts:
-   - Jonathan Olivia - 
-   - Teaka Moaniba - esamgel@gmail.com
+All routes return Json
+- GET /: Root route shows if Web API is running
+- GET api/v1/documents/: returns all confiugration IDs
+- GET api/v1/document/[ID]: returns details about a single document with given ID
+- POST api/v1/document/: creates a new document
+
+- GET /: Root route shows if Web API is running
+- GET api/v1/inheritors/: returns all confiugration IDs
+- GET api/v1/inheritor/[ID]: returns details about a single inheritor with given ID
+- POST api/v1/inhertor/: creates a new document
+
+- GET /: Root route shows if Web API is running
+- GET api/v1/notes/: returns all confiugration IDs
+- GET api/v1/note/[ID]: returns details about a single note with given ID
+- POST api/v1/note/: creates a new document
+
+Install
+-Install this API by cloning the relevant branch and installing required gems from Gemfile.lock:
+ # bundle install
+
    
   Reference: base on soumyaray ISS secuity repo @ https://github.com/ISS-Security/credence-api/tree/0_api_mvc
   
