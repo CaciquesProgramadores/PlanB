@@ -15,8 +15,6 @@ It includes the following features:
  Required development enviroment:
   - Language Ruby 2.6.2
   - Roda framework -v 3.18
-  - MySql/POSTREGSQL database
-  - Flutter /dart mobile platform.
   
  Other Required packages:
    - Rack 
