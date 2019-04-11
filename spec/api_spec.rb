@@ -6,9 +6,11 @@ require 'rack/test'
 require 'yaml'
 
 require_relative '../app/controllers/app'
-require_relative '../app/models/document'
+
 require_relative '../app/models/note'
 require_relative '../app/models/inheritor'
+
+require_relative '../app/models/document'
 
 def app
   LastWillFile::Api
@@ -23,6 +25,8 @@ describe 'Test LastWillFile Web API' do
 
   before do
     Dir.glob('app/db/store/*.txt').each { |filename| FileUtils.rm(filename) }
+    Dir.glob('app/db/store/inheritors/*.txt').each { |filename| FileUtils.rm(filename) }
+    Dir.glob('app/db/store/notes/*.txt').each { |filename| FileUtils.rm(filename) }
   end
 
   it 'should find the root route' do
@@ -75,11 +79,11 @@ describe 'Test LastWillFile Web API' do
       _(result['inheritor_ids'].count).must_equal 2
     end
 
-    it 'HAPPY: should be able to get details of a single document' do
+    it 'HAPPY: should be able to get details of a single inheritor' do
       LastWillFile::Inheritor.new(DATA_inh[1]).save
-      id = Dir.glob('app/db/store/inheritors/*.txt').first.split(%r{[/\.]})[3]
+      id = Dir.glob('app/db/store/inheritors/*.txt').first.split(%r{[/\.]})[4]
 
-      get "/api/v1/documents/#{id}"
+      get "/api/v1/inheritors/#{id}"
       result = JSON.parse last_response.body
 
       _(last_response.status).must_equal 200
@@ -112,7 +116,7 @@ describe 'Test LastWillFile Web API' do
 
     it 'HAPPY: should be able to get details of a single note' do
       LastWillFile::Note.new(DATA_note[1]).save
-      id = Dir.glob('app/db/store/notes/*.txt').first.split(%r{[/\.]})[3]
+      id = Dir.glob('app/db/store/notes/*.txt').first.split(%r{[/\.]})[4]
 
       get "/api/v1/notes/#{id}"
       result = JSON.parse last_response.body
