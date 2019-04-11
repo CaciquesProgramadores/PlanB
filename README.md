@@ -32,7 +32,7 @@ All routes return Json
 
 - GET api/v1/inheritors/: returns all inheritors IDs
 - GET api/v1/inheritors/[ID]: returns details about a single inheritor with given ID
-- POST api/v1/inhertors/: creates a new inheritor
+- POST api/v1/inheritors/: creates a new inheritor
 
 - GET api/v1/notes/: returns all notes IDs
 - GET api/v1/notes/[ID]: returns details about a single note with given ID
