@@ -21,10 +21,12 @@ It includes the following features:
  Other Required packages:
    - Rack 
    - libsodium18 -rbnacl
-   - base on soumyaray ISS secuity repo @ https://github.com/ISS-Security/credence-api/tree/0_api_mvc
+   - see gem file for full detail
   
   Developers email contacts:
    - Jonathan Olivia - 
    - Teaka Moaniba - esamgel@gmail.com
+   
+  Reference: base on soumyaray ISS secuity repo @ https://github.com/ISS-Security/credence-api/tree/0_api_mvc
   
 
