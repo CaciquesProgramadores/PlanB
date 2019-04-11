@@ -1,0 +1,9 @@
+---
+- filename: 'notes_secrets1.yml'
+  description: 'el feo del grupo'
+  inheritor_ids: ''
+  files_ids: ''
+- filename: 'notes_secrets2.yml'
+  description: 'the other uncle'
+  inheritor_ids: ''
+  files_ids: ''

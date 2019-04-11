@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '~> 2.6'
+ruby '~> 2.4'
 
 # Web API
 gem 'roda', '~>3.6'
