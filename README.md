@@ -20,7 +20,7 @@ It includes the following features:
   
   
   Developers email contacts:
-    Jonathan Olivia - 
-    Teaka Moaniba - esamgel@gmail.com
+   - Jonathan Olivia - 
+   - Teaka Moaniba - esamgel@gmail.com
   
 
