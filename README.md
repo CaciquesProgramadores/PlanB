@@ -34,7 +34,7 @@ It includes the following features:
   All routes return Json
 
   - GET `/`: Root route shows if Web API is running
-  
+
   - GET `api/v1/documents/`: returns all documents IDs
   - GET `api/v1/documents/[ID]`: returns details about a single document with given ID
   - POST `api/v1/documents/`: creates a new document
