@@ -40,14 +40,13 @@ All routes return Json
 
 ## Install
 -Install this API by cloning the relevant branch and installing required gems from Gemfile.lock:
- # bundle install
 
 ## Execute
 
 Run this API using:
 
  ```shell
- rackup
+  bundle install
  ```
 Setup development database once:
 
