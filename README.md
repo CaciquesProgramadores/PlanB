@@ -49,6 +49,39 @@ Run this API using:
  ```shell
  rackup
  ```
+Setup development database once:
 
+```shell
+rake db:migrate
+```
+
+## Execute
+
+Run this API using:
+
+```shell
+rackup
+```
+
+## Test
+
+Setup test database once:
+
+```shell
+RACK_ENV=test rake db:migrate
+```
+
+Run the test specification script in `Rakefile`:
+
+```shell
+rake spec
+```
+
+## Release check
+
+Before submitting pull requests, please check if specs, style, and dependency audits pass:
+
+```shell
+rake release?
 
 Reference: base on soumyaray ISS secuity repo @ https://github.com/ISS-Security/credence-api/tree/0_api_mvc
