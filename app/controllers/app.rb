@@ -3,118 +3,94 @@
 require 'roda'
 require 'json'
 
-require_relative '../models/document'
-require_relative '../models/inheritor'
-require_relative '../models/note'
-
+# rubocop:disable Metrics/BlockLength
 module LastWillFile
   # Web controller for Credence API
   class Api < Roda
-    plugin :environments
     plugin :halt
 
-    configure do
-      Document.setup
-      Inheritor.setup
-      Note.setup
-    end
-
-    route do |routing| # rubocop:disable Metrics/BlockLength
+    route do |routing|
       response['Content-Type'] = 'application/json'
 
       routing.root do
-        { message: 'LastWillFileAPI up at /api/v1' }.to_json
+        { message: 'LastWillAPI up at /api/v1' }.to_json
       end
 
-      routing.on 'api' do
-        routing.on 'v1' do
-         routing.on 'documents' do
-            # GET api/v1/documents/[id]
-            routing.get String do |id|
-              Document.find(id).to_json
-            rescue StandardError
-              routing.halt 404, { message: 'Document not found' }.to_json
-            end
+      @api_root = 'api/v1'
+      routing.on @api_root do
+        routing.on 'notes' do
+          @proj_route = "#{@api_root}/notes"
 
-            # GET api/v1/documents
-            routing.get do
-              output = { document_ids: Document.all }
-              JSON.pretty_generate(output)
-            end
-
-            # POST api/v1/documents
-            routing.post do
-              new_data = JSON.parse(routing.body.read)
-              new_doc = Document.new(new_data)
-
-              if new_doc.save
-                response.status = 201
-                { message: 'Document saved', id: new_doc.id }.to_json
-              else
-                routing.halt 400, { message: 'Could not save Document' }.to_json
+          routing.on String do |n_id|
+            routing.on 'inheritors' do
+              @doc_route = "#{@api_root}/notes/#{n_id}/inheritors"
+              # GET api/v1/notes/[note_id]/inheritors/[inh_id]
+              routing.get String do |inh_id|
+                doc = Inheritor.where(note_id: n_id, id: inh_id).first
+                doc ? doc.to_json : raise('Inheritor not found')
+              rescue StandardError => e
+                routing.halt 404, { message: e.message }.to_json
               end
+
+              # GET api/v1/notes/[note_id]/inheritors
+              routing.get do
+                output = { data: Note.first(id: n_id).inheritors }
+                JSON.pretty_generate(output)
+              rescue StandardError
+                routing.halt 404, message: 'Could not find inheritors'
+              end
+
+              # POST api/v1/notes/[ID]/inheritors
+              routing.post do
+                new_data = JSON.parse(routing.body.read)
+                mynote = Note.first(id: n_id)
+                new_inh = mynote.add_inheritor(new_data)
+
+                if new_inh
+                  response.status = 201
+                  response['Location'] = "#{@doc_route}/#{new_inh.id}"
+                  { message: 'Inheritor saved', data: new_inh }.to_json
+                else
+                  routing.halt 400, 'Could not save inheritor'
+                end
+
+              rescue StandardError
+                routing.halt 500, { message: 'Database error' }.to_json
+              end
+            end
+
+            # GET api/v1/notes/[ID]
+            routing.get do
+              mynote = Note.first(id: n_id)
+              mynote ? mynote.to_json : raise('Note not found')
+            rescue StandardError => error
+              routing.halt 404, { message: error.message }.to_json
             end
           end
 
-          routing.on 'inheritors' do
-            # GET api/v1/inheritors/[id]
-            routing.get String do |id|
-              Inheritor.find(id).to_json
-            rescue StandardError
-              routing.halt 404, { message: 'Inheritor not found' }.to_json
-            end
-
-            # GET api/v1/inheritor
-            routing.get do
-              output = { inheritor_ids: Inheritor.all }
-              JSON.pretty_generate(output)
-            end
-
-            # POST api/v1/inheritors
-            routing.post do
-              new_data = JSON.parse(routing.body.read)
-              new_doc = Inheritor.new(new_data)
-
-              if new_doc.save
-                response.status = 201
-                { message: 'Inheritor saved', id: new_doc.id }.to_json
-              else
-                routing.halt 400, { message: 'Could not save Inheritor' }.to_json
-              end
-            end
+          # GET api/v1/notes
+          routing.get do
+            output = { data: Note.all }
+            JSON.pretty_generate(output)
+          rescue StandardError
+            routing.halt 404, { message: 'Could not find notes' }.to_json
           end
 
-          routing.on 'notes' do
-            # GET api/v1/notes/[id]
-            routing.get String do |id|
-              Note.find(id).to_json
-            rescue StandardError
-              routing.halt 404, { message: 'note not found' }.to_json
-            end
+          # POST api/v1/notes
+          routing.post do
+            new_data = JSON.parse(routing.body.read)
+            new_note = Note.new(new_data)
+            raise('Could not save note') unless new_note.save
 
-            # GET api/v1/note
-            routing.get do
-              output = { note_ids: Note.all }
-              JSON.pretty_generate(output)
-            end
-
-            # POST api/v1/notes
-            routing.post do
-              new_data = JSON.parse(routing.body.read)
-              new_doc = Note.new(new_data)
-
-              if new_doc.save
-                response.status = 201
-                { message: 'note saved', id: new_doc.id }.to_json
-              else
-                routing.halt 400, { message: 'Could not save Note' }.to_json
-              end
-            end
+            response.status = 201
+            response['Location'] = "#{@proj_route}/#{new_note.id}"
+            { message: 'Note saved', data: new_note }.to_json
+          rescue StandardError => error
+            routing.halt 400, { message: error.message }.to_json
           end
-
         end
       end
-
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
