@@ -21,9 +21,9 @@ module LastWillFile
                 description: description,
                 relantionship: relantionship,
                 emails: emails,
-                phones: phones, 
+                phones: phones,
                 nickname: nickname,
-                pgp: pgp, 
+                pgp: pgp,
                 fullname: fullname
             }
           },

@@ -26,8 +26,8 @@ module LastWillFile
             }
           }, options
         )
-      end
-      # rubocop:enable MethodLength
     end
-  
+      # rubocop:enable MethodLength
+  end
+
 end

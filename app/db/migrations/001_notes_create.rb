@@ -8,7 +8,6 @@ Sequel.migration do
       primary_key :id
 
       String :description, null: false
-      String :inheritor_ids, unique: true
       String :files_ids
 
       DateTime :created_at

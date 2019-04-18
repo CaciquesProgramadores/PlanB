@@ -14,12 +14,10 @@ Sequel.migration do
       String :phones, null: false
       String :nickname
       String :pgp
-      String :fullname, null: false 
+      String :fullname, null: false
 
       DateTime :created_at
       DateTime :updated_at
-
-      unique [:note_id, :emails, :phones]
     end
   end
 end
