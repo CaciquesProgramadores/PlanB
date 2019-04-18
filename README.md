@@ -24,19 +24,13 @@ It includes the following features:
 ## API route and methods:
 
 All routes return Json
-- GET /: Root route shows if Web API is running
-- GET api/v1/documents/: returns all documents IDs
-- GET api/v1/documents/[ID]: returns details about a single document with given ID
-- POST api/v1/documents/: creates a new document
-
-
-- GET api/v1/inheritors/: returns all inheritors IDs
-- GET api/v1/inheritors/[ID]: returns details about a single inheritor with given ID
-- POST api/v1/inheritors/: creates a new inheritor
-
-- GET api/v1/notes/: returns all notes IDs
-- GET api/v1/notes/[ID]: returns details about a single note with given ID
-- POST api/v1/notes/: creates a new note
+- GET  `/`: Root route shows if Web API is running
+- GET  `api/v1/notes/[proj_id]/inheritor/[doc_id]`: Get a document
+- GET  `api/v1/notes/[proj_id]/inheritors`: Get list of documents for project
+- POST `api/v1/notes/[ID]/inheritors`: Upload document for a project
+- GET  `api/v1/notes/[ID]`: Get information about a project
+- GET  `api/v1/notes`: Get list of all projects
+- POST `api/v1/notes`: Create new project
 
 ## Install
 -Install this API by cloning the relevant branch and installing required gems from Gemfile.lock:
