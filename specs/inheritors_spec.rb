@@ -29,7 +29,7 @@ describe 'Test Inheritor Handling' do
   it 'HAPPY: should be able to get details of a single inheritor' do
     doc_data = DATA[:inheritors][1]
     proj = LastWillFile::Note.first
-    doc = proj.add_document(doc_data).save
+    doc = proj.add_inheritor(doc_data).save
 
     get "/api/v1/notes/#{proj.id}/inheritors/#{doc.id}"
     _(last_response.status).must_equal 200
