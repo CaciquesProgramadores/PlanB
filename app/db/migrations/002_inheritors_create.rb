@@ -6,7 +6,7 @@ Sequel.migration do
   change do
     create_table(:inheritors) do
       primary_key :id
-      foreign_key :note_id, table: :notes
+      foreign_key :note_id, :notes
 
       String :description
       String :relantionship, null: false
