@@ -38,7 +38,7 @@ module LastWillFile
                 output = { data: Note.first(id: notee_id).inheritors }
                 JSON.pretty_generate(output)
               rescue StandardError
-                routing.halt 404, message: 'Could not find documents'
+                routing.halt 404, { message: 'Could not find documents' }.to_json
               end
 
               # POST api/v1/notes/[notee_id]/inheritors
