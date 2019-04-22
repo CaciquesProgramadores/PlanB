@@ -32,6 +32,9 @@ All routes return Json
 - GET  `api/v1/notes`: Get list of all projects
 - POST `api/v1/notes`: Create new project
 
+#Note
+- Ensure to create dir app/db/store before attempting shell below.
+
 ## Install
 -Install this API by cloning the relevant branch and installing required gems from Gemfile.lock:
 
