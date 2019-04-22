@@ -20,7 +20,6 @@ module LastWillFile
               attributes: {
                 id: id,
                 description: description,
-                inheritor_ids: inheritor_ids,
                 files_ids: files_ids
               }
             }
