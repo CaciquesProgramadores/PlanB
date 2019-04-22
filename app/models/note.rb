@@ -11,6 +11,10 @@ module LastWillFile
 
     plugin :timestamps
 
+    def inheritor_ids
+      inheritors.map(&:id)
+    end
+
     # rubocop:disable MethodLength
     def to_json(options = {})
         JSON(
