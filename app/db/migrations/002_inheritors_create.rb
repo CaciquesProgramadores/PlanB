@@ -18,6 +18,8 @@ Sequel.migration do
 
       DateTime :created_at
       DateTime :updated_at
+
+      unique [:note_id]
     end
   end
 end

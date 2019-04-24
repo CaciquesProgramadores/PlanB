@@ -46,7 +46,18 @@ module LastWillFile
                 new_data = JSON.parse(routing.body.read)
                 proj = Note.first(id: notee_id)
                 new_doc = proj.add_inheritor(new_data)
+                raise 'Could not save inheritor' unless new_doc
 
+                response.status = 201
+                response['Location'] = "#{@doc_route}/#{new_doc.id}"
+                { message: 'Document saved', data: new_doc }.to_json
+              rescue Sequel::MassAssignmentRestriction
+                routing.halt 400, { message: 'Illegal Request' }.to_json
+              rescue StandardError
+                routing.halt 500, { message: 'Database error' }.to_json
+              end
+            end  
+=begin
                 if new_doc
                   response.status = 201
                   response['Location'] = "#{@inheritor_route}/#{new_doc.id}"
@@ -59,7 +70,7 @@ module LastWillFile
                 routing.halt 500, { message: 'Database error' }.to_json
               end
             end
-
+=end
             # GET api/v1/notes/[ID]
             routing.get do
               proj = Note.first(id: notee_id)
@@ -85,12 +96,21 @@ module LastWillFile
             raise('Could not save note') unless new_proj.save
 
             response.status = 201
+            response['Location'] = "#{@proj_route}/#{new_proj.id}"
+            { message: 'Project saved', data: new_proj }.to_json
+          rescue Sequel::MassAssignmentRestriction
+            routing.halt 400, { message: 'Illegal Request' }.to_json
+          rescue StandardError => error
+            routing.halt 500, { message: error.message }.to_json
+          end
+=begin
+            response.status = 201
             response['Location'] = "#{@note_route}/#{new_proj.id}"
             { message: 'Note saved', data: new_proj }.to_json
           rescue StandardError => error
             routing.halt 400, { message: error.message }.to_json
           end
-
+=end
         end
       end
     end

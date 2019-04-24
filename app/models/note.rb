@@ -11,6 +11,9 @@ module LastWillFile
 
     plugin :timestamps
 
+    plugin :whitelist_security
+    set_allowed_columns :description, :files_ids
+
     def inheritor_ids
       inheritors.map(&:id)
     end

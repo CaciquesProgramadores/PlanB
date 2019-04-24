@@ -9,6 +9,8 @@ module LastWillFile
     many_to_one :note
 
     plugin :timestamps
+    plugin :whitelist_security
+    set_allowed_columns :description, :relantionship, :emails, :phones, :nickname, :pgp, :fullname
 
     # rubocop:disable MethodLength
     def to_json(options = {})
