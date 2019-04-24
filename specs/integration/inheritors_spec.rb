@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 describe 'Test Inheritor Handling' do
   include Rack::Test::Methods
@@ -29,7 +29,7 @@ describe 'Test Inheritor Handling' do
   it 'HAPPY: should be able to get details of a single inheritor' do
     doc_data = DATA[:inheritors][1]
     proj = LastWillFile::Note.first
-    doc = proj.add_inheritor(doc_data).save
+    doc = proj.add_inheritor(doc_data)#.save
 
     get "/api/v1/notes/#{proj.id}/inheritors/#{doc.id}"
     _(last_response.status).must_equal 200
@@ -46,20 +46,34 @@ describe 'Test Inheritor Handling' do
     _(last_response.status).must_equal 404
   end
 
-  it 'HAPPY: should be able to create new inheritors' do
-    proj = LastWillFile::Note.first
-    doc_data = DATA[:inheritors][1]
+  describe 'Creating Inheritors' do
+    before do
+      @proj = LastWillFile::Note.first
+      @doc_data = DATA[:inheritors][1]
+      @req_header = { 'CONTENT_TYPE' => 'application/json' }
+    end
 
-    req_header = { 'CONTENT_TYPE' => 'application/json' }
-    post "api/v1/notes/#{proj.id}/inheritors",
-         doc_data.to_json, req_header
-    _(last_response.status).must_equal 201
-    _(last_response.header['Location'].size).must_be :>, 0
+    it 'HAPPY: should be able to create new inheritors' do
+      post "api/v1/notes/#{@proj.id}/inheritors",
+          @doc_data.to_json, @req_header
+      _(last_response.status).must_equal 201
+      _(last_response.header['Location'].size).must_be :>, 0
 
-    created = JSON.parse(last_response.body)['data']['data']['attributes']
-    doc = LastWillFile::Inheritor.first
+      created = JSON.parse(last_response.body)['data']['data']['attributes']
+      doc = LastWillFile::Inheritor.first
 
-    _(created['id']).must_equal doc.id
-    _(created['description']).must_equal doc_data['description']
+      _(created['id']).must_equal doc.id
+      _(created['description']).must_equal @doc_data['description']
+    end
+    
+    it 'SECURITY: should not create inheritors with mass assignment' do
+      bad_data = @doc_data.clone
+      bad_data['created_at'] = '1900-01-01'
+      post "api/v1/notes/#{@proj.id}/inheritors",
+          bad_data.to_json, @req_header
+
+      _(last_response.status).must_equal 400
+      _(last_response.header['Location']).must_be_nil
+    end
   end
 end
