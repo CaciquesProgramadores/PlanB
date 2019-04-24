@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rake/testtask'
+require 'rake/testtask' #
 
 task :default => :spec
 
