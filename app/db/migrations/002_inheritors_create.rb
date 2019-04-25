@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require 'sequel'
-# require 'securerandom'
+require 'securerandom'
 
 Sequel.migration do
   change do
     create_table(:inheritors) do
-      primary_key :id
+      uuid :id, primary_key: true
       foreign_key :note_id, :notes
 
       String :description_secure
