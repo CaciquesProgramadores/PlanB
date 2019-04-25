@@ -1,2 +1,3 @@
 .remote-sync.json
 app/db/store/*
+config/secrets.yml

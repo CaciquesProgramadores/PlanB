@@ -2,6 +2,7 @@
 
 require 'roda'
 require 'econfig'
+require './app/lib/secure_db'
 
 module LastWillFile
   # Configuration for the API
@@ -34,6 +35,8 @@ module LastWillFile
       def self.DB # rubocop:disable Naming/MethodName
         DB
       end
+
+      SecureDB.setup(config)
     end
   end
 end
