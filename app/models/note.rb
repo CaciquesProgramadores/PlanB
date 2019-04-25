@@ -2,12 +2,15 @@
 
 require 'json'
 require 'sequel'
+require 'securerandom'
 
 module LastWillFile
   # Models a secret Note
   class Note < Sequel::Model
     one_to_many :inheritors
     plugin :association_dependencies, inheritors: :destroy
+
+    # plugin :uuid, field: :id
 
     plugin :timestamps
 

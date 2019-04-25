@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'sequel'
+# require 'securerandom'
 
 Sequel.migration do
   change do
@@ -19,7 +20,7 @@ Sequel.migration do
       DateTime :created_at
       DateTime :updated_at
 
-      unique [:note_id]
+      # unique [:note_id]
     end
   end
 end
