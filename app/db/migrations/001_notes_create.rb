@@ -9,7 +9,7 @@ Sequel.migration do
       primary_key :id
       # uuid :id, primary_key: true
 
-      String :description, null: false
+      String :description_secure, null: false
       String :files_ids
 
       DateTime :created_at

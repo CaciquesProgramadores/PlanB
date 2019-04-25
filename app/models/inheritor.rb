@@ -12,6 +12,23 @@ module LastWillFile
     plugin :whitelist_security
     set_allowed_columns :description, :relantionship, :emails, :phones, :nickname, :pgp, :fullname
 
+    #secure getters and setters
+    def description
+      SecureDB.decrypt(description_secure)
+    end
+
+    def description=(plaintext)
+      self.description_secure = SecureDB.encrypt(plaintext)
+    end
+
+    def relantionship
+      SecureDB.decrypt(relantionship_secure)
+    end
+
+    def relantionship=(plaintext)
+      self.relantionship_secure = SecureDB.encrypt(plaintext)
+    end
+
     # rubocop:disable MethodLength
     def to_json(options = {})
       JSON(

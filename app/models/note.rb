@@ -21,6 +21,15 @@ module LastWillFile
       inheritors.map(&:id)
     end
 
+    #secure getters and setters
+    def description
+      SecureDB.decrypt(description_secure)
+    end
+
+    def description=(plaintext)
+      self.description_secure = SecureDB.encrypt(plaintext)
+    end
+
     # rubocop:disable MethodLength
     def to_json(options = {})
         JSON(
