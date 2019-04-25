@@ -84,5 +84,14 @@ describe 'Test Inheritor Handling' do
       _(stored_inh['description_secure']).wont_equal new_inh.description
       _(stored_inh['relantionship_secure']).wont_equal new_inh.relantionship
     end
+
+    it 'SECURITY: should not use deterministic integers as ID' do
+      inh_data = DATA[:inheritors][1]
+      note = LastWillFile::Note.first
+      new_inh = note.add_inheritor(inh_data)
+
+      _(new_inh.id).wont_be_instance_of Integer
+      _(proc { new_inh.id - new_inh.id }).must_raise NoMethodError
+    end
   end
 end
