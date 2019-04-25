@@ -51,7 +51,7 @@ describe 'Test Note Handling' do
     end
   end
 
-  describe 'Creating New Projects' do
+  describe 'Creating New Notes' do
     before do
       @req_header = { 'CONTENT_TYPE' => 'application/json' }
       @notes_data = DATA[:notes][1]
@@ -77,5 +77,15 @@ describe 'Test Note Handling' do
       _(last_response.status).must_equal 400
       _(last_response.header['Location']).must_be_nil
     end
-  end  
+
+    it 'SECURITY: should secure sensitive attributes' do
+      proj = DATA[:notes][1]
+      LastWillFile::Note.create(proj).save
+      store_note1 = LastWillFile::Note.first
+      store_note2 = app.DB[:notes].first
+
+      _(store_note1['description_secure']).wont_equal proj['description']
+      _(store_note2['description_secure']).wont_equal proj['description']
+    end
+  end
 end

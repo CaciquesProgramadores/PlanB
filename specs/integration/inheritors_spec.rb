@@ -65,7 +65,7 @@ describe 'Test Inheritor Handling' do
       _(created['id']).must_equal doc.id
       _(created['description']).must_equal @doc_data['description']
     end
-    
+
     it 'SECURITY: should not create inheritors with mass assignment' do
       bad_data = @doc_data.clone
       bad_data['created_at'] = '1900-01-01'
@@ -74,6 +74,16 @@ describe 'Test Inheritor Handling' do
 
       _(last_response.status).must_equal 400
       _(last_response.header['Location']).must_be_nil
+    end
+
+    it 'SECURITY: should secure sensitive attributes' do
+      inh_data = DATA[:inheritors][1]
+      note = LastWillFile::Note.first
+      new_inh = note.add_inheritor(inh_data)
+      stored_inh = app.DB[:inheritors].first
+      
+      _(stored_inh['description_secure']).wont_equal new_inh.description
+      _(stored_inh['relantionship_secure']).wont_equal new_inh.relantionship
     end
   end
 end

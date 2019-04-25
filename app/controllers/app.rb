@@ -50,13 +50,13 @@ module LastWillFile
 
                 response.status = 201
                 response['Location'] = "#{@doc_route}/#{new_doc.id}"
-                { message: 'Document saved', data: new_doc }.to_json
+                { message: 'Inheritor saved', data: new_doc }.to_json
               rescue Sequel::MassAssignmentRestriction
                 routing.halt 400, { message: 'Illegal Request' }.to_json
               rescue StandardError
                 routing.halt 500, { message: 'Database error' }.to_json
               end
-            end  
+            end
 =begin
                 if new_doc
                   response.status = 201
