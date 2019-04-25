@@ -21,7 +21,7 @@ module LastWillFile
       inheritors.map(&:id)
     end
 
-    #secure getters and setters
+    # secure getters and setters
     def description
       SecureDB.decrypt(description_secure)
     end

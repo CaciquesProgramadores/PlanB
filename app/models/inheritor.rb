@@ -12,7 +12,7 @@ module LastWillFile
     plugin :whitelist_security
     set_allowed_columns :description, :relantionship, :emails, :phones, :nickname, :pgp, :fullname
 
-    #secure getters and setters
+    # secure getters and setters
     def description
       SecureDB.decrypt(description_secure)
     end

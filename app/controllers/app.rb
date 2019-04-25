@@ -38,7 +38,7 @@ module LastWillFile
                 output = { data: Note.first(id: notee_id).inheritors }
                 JSON.pretty_generate(output)
               rescue StandardError
-                routing.halt 404, { message: 'Could not find documents' }.to_json
+                routing.halt 404, { message: 'Could not find Inheritors' }.to_json
               end
 
               # POST api/v1/notes/[notee_id]/inheritors
@@ -57,20 +57,7 @@ module LastWillFile
                 routing.halt 500, { message: 'Database error' }.to_json
               end
             end
-=begin
-                if new_doc
-                  response.status = 201
-                  response['Location'] = "#{@inheritor_route}/#{new_doc.id}"
-                  { message: 'Inheritor saved', data: new_doc }.to_json
-                else
-                  routing.halt 400, 'Could not save inheritor'
-                end
 
-              rescue StandardError
-                routing.halt 500, { message: 'Database error' }.to_json
-              end
-            end
-=end
             # GET api/v1/notes/[ID]
             routing.get do
               proj = Note.first(id: notee_id)
@@ -78,7 +65,6 @@ module LastWillFile
             rescue StandardError => error
               routing.halt 404, { message: error.message }.to_json
             end
-
           end
 
           # GET api/v1/notes
@@ -103,14 +89,6 @@ module LastWillFile
           rescue StandardError => error
             routing.halt 500, { message: error.message }.to_json
           end
-=begin
-            response.status = 201
-            response['Location'] = "#{@note_route}/#{new_proj.id}"
-            { message: 'Note saved', data: new_proj }.to_json
-          rescue StandardError => error
-            routing.halt 400, { message: error.message }.to_json
-          end
-=end
         end
       end
     end
