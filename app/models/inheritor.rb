@@ -36,14 +36,14 @@ module LastWillFile
           data: {
             type: 'inheritor',
             attributes: {
-                id: id,
-                description: description,
-                relantionship: relantionship,
-                emails: emails,
-                phones: phones,
-                nickname: nickname,
-                pgp: pgp,
-                fullname: fullname
+              id: id,
+              description: description,
+              relantionship: relantionship,
+              emails: emails,
+              phones: phones,
+              nickname: nickname,
+              pgp: pgp,
+              fullname: fullname
             }
           },
           included: {

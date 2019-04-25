@@ -32,20 +32,19 @@ module LastWillFile
 
     # rubocop:disable MethodLength
     def to_json(options = {})
-        JSON(
-          {
-            data: {
-              type: 'note',
-              attributes: {
-                id: id,
-                description: description,
-                files_ids: files_ids
-              }
+      JSON(
+        {
+          data: {
+            type: 'note',
+            attributes: {
+              id: id,
+              description: description,
+              files_ids: files_ids
             }
-          }, options
-        )
+          }
+        }, options
+      )
     end
-      # rubocop:enable MethodLength
+    # rubocop:enable MethodLength
   end
-
 end
