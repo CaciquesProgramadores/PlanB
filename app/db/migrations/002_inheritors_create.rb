@@ -16,7 +16,7 @@ Sequel.migration do
       String :nickname
       String :pgp
       String :fullname, null: false
-
+ 
       DateTime :created_at
       DateTime :updated_at
     end
