@@ -8,7 +8,7 @@ module LastWillFile
   class Inheritor < Sequel::Model
     many_to_one :note
 
-    plugin :timestamps
+    plugin :timestamps, update_on_create: true
     plugin :whitelist_security
     set_allowed_columns :description, :relantionship, :emails, :phones, :nickname, :pgp, :fullname
 
