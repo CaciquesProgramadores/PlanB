@@ -7,6 +7,7 @@ Sequel.migration do
   change do
     create_table(:notes) do
       primary_key :id
+      foreign_key :owner_id, :accounts
       # uuid :id, primary_key: true
 
       String :description_secure, null: false
