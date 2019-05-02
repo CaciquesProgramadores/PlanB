@@ -12,7 +12,7 @@ Sequel.migration do
 
       String :description_secure, null: false
       String :files_ids
-      String :title
+      String :title, null: false
 
       DateTime :created_at
       DateTime :updated_at

@@ -14,9 +14,9 @@ end
 require 'yaml'
 DIR = File.dirname(__FILE__)
 ACCOUNTS_INFO = YAML.load_file("#{DIR}/accounts_seed.yml")
-OWNER_INFO = YAML.load_file("#{DIR}/owners_projects.yml")
-NOTE_INFO = YAML.load_file("#{DIR}/notes_seed.yml")
-INHERITOR_INFO = YAML.load_file("#{DIR}/inheritor_seed.yml")
+OWNER_INFO = YAML.load_file("#{DIR}/owners_notes.yml")
+NOTE_INFO = YAML.load_file("#{DIR}/notes_seeds.yml")
+INHERITOR_INFO = YAML.load_file("#{DIR}/inheritor_seeds.yml")
 ACC_INHERITORS_INFO = YAML.load_file("#{DIR}/account_inheritors_seed.yml")
 
 def create_accounts
@@ -52,7 +52,7 @@ end
 def add_account_inheritors
   acc_inh_info = ACC_INHERITORS_INFO
   acc_inh_info.each do |acc_inh|
-    note = LastWillFile::Note.first(name: acc_inh['title'])
+    note = LastWillFile::Note.first(title: acc_inh['title'])
     acc_inh['authorises_email'].each do |email|
       acc_inheritor = LastWillFile::Account.first(email: email)
       note.add_authorise(acc_inheritor)

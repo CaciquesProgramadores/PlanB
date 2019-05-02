@@ -15,13 +15,13 @@ module LastWillFile
                  left_key: :note_id, right_key: :authorise_id
 
     one_to_many :inheritors
-    plugin :association_dependencies, 
-            inheritors: :destroy, 
+    plugin :association_dependencies,
+            inheritors: :destroy,
             authorises: :nullify
 
     plugin :timestamps
     plugin :whitelist_security
-    set_allowed_columns :description, :files_ids
+    set_allowed_columns :description, :files_ids, :title
 
     def inheritor_ids
       inheritors.map(&:id)
@@ -45,7 +45,8 @@ module LastWillFile
             attributes: {
               id: id,
               description: description,
-              files_ids: files_ids
+              files_ids: files_ids,
+              title: title
             }
           }
         }, options
