@@ -2,7 +2,7 @@
 
 require 'json'
 require 'sequel'
-#require 'securerandom'
+# require 'securerandom'
 
 module LastWillFile
   # Models a secret Note

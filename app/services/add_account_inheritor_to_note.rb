@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LastWillFile
   # Add a inheritor who has an account in the system
   class AddAccountInheritorToNote

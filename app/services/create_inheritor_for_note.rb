@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LastWillFile
   # Create new configuration for a # NOTE:
   class CreateInheritorForNote

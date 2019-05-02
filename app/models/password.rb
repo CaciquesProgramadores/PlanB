@@ -40,4 +40,3 @@ module LastWillFile
     end
   end
 end
-

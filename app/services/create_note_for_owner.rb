@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LastWillFile
   # Service object to create a new note for an owner
   class CreateNoteForOwner

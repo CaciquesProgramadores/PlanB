@@ -5,11 +5,11 @@ require 'json'
 require_relative './password'
 
 module LastWillFile
-  #Models a registered account  
+  # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_notes, class: :'LastWillFile::Note', key: :owner_id
     plugin :association_dependencies, owned_notes: :destroy
-    
+
     many_to_many :authorises,
                  class: :'LastWillFile::Note',
                  join_table: :accounts_notes,
@@ -43,5 +43,5 @@ module LastWillFile
         }, options
       )
     end
-  end  
+  end
 end
