@@ -16,8 +16,8 @@ module LastWillFile
 
     one_to_many :inheritors
     plugin :association_dependencies,
-            inheritors: :destroy,
-            authorises: :nullify
+           inheritors: :destroy,
+           authorises: :nullify
 
     plugin :timestamps
     plugin :whitelist_security

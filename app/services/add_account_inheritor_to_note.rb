@@ -7,6 +7,7 @@ module LastWillFile
       acc_inheritor = Account.first(email: email)
       note = Note.first(id: note_id)
       return false if note.owner.id == acc_inheritor.id
+
       acc_inheritor.add_note(note)
       acc_inheritor
     end

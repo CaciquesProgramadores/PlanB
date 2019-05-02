@@ -19,9 +19,13 @@ module LastWillFile
     end
 
     def to_json(options = {})
-      JSON({ salt: Base64.strict_encode64(@salt),
-            digest: Base64.strict_encode64(@digest)},
-          options)
+      JSON(
+        {
+          salt: Base64.strict_encode64(@salt),
+          digest: Base64.strict_encode64(@digest)
+        },
+        options
+      )
     end
 
     alias to_s to_json
@@ -33,10 +37,10 @@ module LastWillFile
     end
 
     def self.from_digest(digest)
-        digested = JSON.parse(digest)
-        salt = Base64.strict_decode64(digested['salt'])
-        digest = Base64.strict_decode64(digested['digest'])
-        new(salt, digest)
+      digested = JSON.parse(digest)
+      salt = Base64.strict_decode64(digested['salt'])
+      digest = Base64.strict_decode64(digested['digest'])
+      new(salt, digest)
     end
   end
 end
