@@ -41,7 +41,7 @@ describe 'Test Note Handling' do
     end
 
     it 'SECURITY: should prevent basic SQL injection targeting IDs' do
-      LastWillFile::Note.create(description: 'New Note',  title: 'titulo 1')
+      LastWillFile::Note.create(description: 'New Note', title: 'titulo 1')
       LastWillFile::Note.create(description: 'Newer Note', title: 'titulo 2')
       get 'api/v1/projects/2%20or%20id%3E0'
 
