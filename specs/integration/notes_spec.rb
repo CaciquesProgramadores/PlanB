@@ -30,8 +30,8 @@ describe 'Test Note Handling' do
       _(last_response.status).must_equal 200
 
       result = JSON.parse last_response.body
-      _(result['data']['attributes']['id']).must_equal id
-      _(result['data']['attributes']['description']).must_equal existing_proj['description']
+      _(result['attributes']['id']).must_equal id
+      _(result['attributes']['description']).must_equal existing_proj['description']
     end
 
     it 'SAD: should return error if unknown note requested' do
@@ -62,7 +62,7 @@ describe 'Test Note Handling' do
       _(last_response.status).must_equal 201
       _(last_response.header['Location'].size).must_be :>, 0
 
-      created = JSON.parse(last_response.body)['data']['data']['attributes']
+      created = JSON.parse(last_response.body)['data']['attributes']
       proj = LastWillFile::Note.first
 
       _(created['id']).must_equal proj.id

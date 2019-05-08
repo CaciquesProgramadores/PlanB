@@ -22,13 +22,15 @@ describe 'Test Inheritor Handling' do
     get "api/v1/notes/#{proj.id}/inheritors"
     _(last_response.status).must_equal 200
 
-    result = JSON.parse last_response.body
-    _(result['data'].count).must_equal 2
+    result = JSON.parse(last_response.body)['data']
+    _(result.count).must_equal 4
+    result.each do |doc|
+      _(doc['type']).must_equal 'inheritor'
+    end
   end
 
   it 'HAPPY: should be able to get details of a single inheritor' do
     doc_data = DATA[:inheritors][1]
-
     proj = LastWillFile::Note.first
     doc = proj.add_inheritor(doc_data)
 
@@ -36,8 +38,8 @@ describe 'Test Inheritor Handling' do
     _(last_response.status).must_equal 200
 
     result = JSON.parse last_response.body
-    _(result['data']['attributes']['id']).must_equal doc.id
-    _(result['data']['attributes']['description']).must_equal doc_data['description']
+    _(result['attributes']['id']).must_equal doc.id
+    _(result['attributes']['description']).must_equal doc_data['description']
   end
 
   it 'SAD: should return error if unknown inheritor requested' do
@@ -55,11 +57,13 @@ describe 'Test Inheritor Handling' do
     end
 
     it 'HAPPY: should be able to create new inheritors' do
-      post "api/v1/notes/#{@proj.id}/inheritors", @doc_data.to_json, @req_header
+      req_header = { 'CONTENT_TYPE' => 'application/json' }
+      post "api/v1/notes/#{@proj.id}/inheritors", 
+            @doc_data.to_json, req_header
       _(last_response.status).must_equal 201
       _(last_response.header['Location'].size).must_be :>, 0
 
-      created = JSON.parse(last_response.body)['data']['data']['attributes']
+      created = JSON.parse(last_response.body)['data']['attributes']
       doc = LastWillFile::Inheritor.first
 
       _(created['id']).must_equal doc.id
