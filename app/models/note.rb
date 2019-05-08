@@ -40,7 +40,6 @@ module LastWillFile
     def to_json(options = {})
       JSON(
         {
-          data: {
             type: 'note',
             attributes: {
               id: id,
@@ -48,7 +47,6 @@ module LastWillFile
               files_ids: files_ids,
               title: title
             }
-          }
         }, options
       )
     end

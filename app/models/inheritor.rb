@@ -35,7 +35,6 @@ module LastWillFile
     def to_json(options = {})
       JSON(
         {
-          data: {
             type: 'inheritor',
             attributes: {
               id: id,
@@ -46,9 +45,8 @@ module LastWillFile
               nickname: nickname,
               pgp: pgp,
               fullname: fullname
-            }
           },
-          included: {
+          include: {
             note: note
           }
         }, options
