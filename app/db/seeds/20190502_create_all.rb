@@ -53,8 +53,10 @@ def add_account_inheritors
   acc_inh_info.each do |acc_inh|
     note = LastWillFile::Note.first(title: acc_inh['title'])
     acc_inh['authorises_email'].each do |email|
-      acc_inheritor = LastWillFile::Account.first(email: email)
-      note.add_authorise(acc_inheritor)
+      LastWillFile::Account.call(
+        email: email, note_id: note.id
+      )
+      #note.add_authorise(acc_inheritor)
     end
   end
 end

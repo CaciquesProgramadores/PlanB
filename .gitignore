@@ -1,3 +1,4 @@
-.remote-sync.json
-app/db/store/*
+.bundle/
 config/secrets.yml
+app/db/store/*
+_*

@@ -27,13 +27,13 @@ module LastWillFile
         raise('Could not save account') unless new_account.save
 
         response.status = 201
-        response['Location'] = "#{@account_route}/#{new_account.id}"
+        response['Location'] = "#{@account_route}/#{new_account.username}"
         { message: 'Account saved', data: new_account }.to_json
       rescue Sequel::MassAssignmentRestriction
         routing.halt 400, { message: 'Illegal Request' }.to_json
-      rescue StandardError => error
-        puts error.inspect
-        routing.halt 500, { message: error.message }.to_json
+      rescue StandardError => e
+        puts e.inspect
+        routing.halt 500, { message: e.message }.to_json
       end
     end
   end
