@@ -16,7 +16,7 @@ module LastWillFile
 
     route do |routing|
       response['Content-Type'] = 'application/json'
-      secure_request? (routing) ||
+      secure_request?(routing) ||
         routing.halt(403, {message: 'TLS/SSL Required'}.to_json)
 
       routing.root do
