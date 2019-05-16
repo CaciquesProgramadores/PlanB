@@ -10,7 +10,7 @@ module LastWillFile
     plugin :halt
     plugin :multi_route
 
-    def secure_request? (routing)
+    def secure_request?(routing)
       routing.scheme.casecmp(Api.config.SECURE_SCHEME).zero?
     end
 
