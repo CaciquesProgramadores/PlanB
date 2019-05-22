@@ -2,7 +2,7 @@
 
 require 'roda'
 require 'econfig'
-require './app/lib/secure_db'
+require_app('lib')
 
 module LastWillFile
   # Configuration for the API
@@ -14,9 +14,11 @@ module LastWillFile
     Econfig.root = '.'
 
     configure :development, :test do
+      require 'pry' # allow binding.pry breakpoints
+
       # Allows running reload! in pry to restart entire app
       def self.reload!
-        exec 'pry -r ./spec/test_load_all'
+        exec 'pry -r ./specs/test_load_all'
       end
     end
 
@@ -36,7 +38,8 @@ module LastWillFile
         DB
       end
 
-      SecureDB.setup(config)
+      SecureDB.setup(config.DB_KEY) # Load crypto keys
+      AuthToken.setup(config.MSG_KEY) # Load crypto keys
     end
   end
 end

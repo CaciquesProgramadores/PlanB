@@ -10,6 +10,7 @@ describe 'Test Note Handling' do
   end
 
   describe 'Getting Notes' do
+=begin
     it 'HAPPY: should be able to get list of all notes' do
       LastWillFile::Note.create(DATA[:notes][0]).save
       LastWillFile::Note.create(DATA[:notes][1]).save
@@ -20,7 +21,7 @@ describe 'Test Note Handling' do
       result = JSON.parse last_response.body
       _(result['data'].count).must_equal 2
     end
-
+=end
     it 'HAPPY: should be able to get details of a single note' do
       existing_proj = DATA[:notes][1]
       LastWillFile::Note.create(existing_proj).save

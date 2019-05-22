@@ -53,6 +53,12 @@ namespace :newkey do
   end
 end
 
+desc 'Create sample cryptographic key for tokens and messaging'
+  task :msg do
+    require_app('lib')
+    puts "MSG_KEY: #{AuthToken.generate_key}"
+  end
+
 namespace :db do
   require_app(nil) # loads config code files only
   require 'sequel'

@@ -58,10 +58,11 @@ module LastWillFile
 
         # GET api/v1/notes
         routing.get do
-          output = { data: Note.all }
-          JSON.pretty_generate(output)
+          account = Account.first(username: @auth_account['username'])
+          notes = account.notes
+          JSON.pretty_generate(data: notes)
         rescue StandardError
-          routing.halt 404, { message: 'Could not find notes' }.to_json
+          routing.halt 403, { message: 'Could not find any notes' }.to_json
         end
 
         # POST api/v1/notes
