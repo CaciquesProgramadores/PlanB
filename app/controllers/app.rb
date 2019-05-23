@@ -21,7 +21,7 @@ module LastWillFile
     route do |routing|
       response['Content-Type'] = 'application/json'
       secure_request?(routing) ||
-        routing.halt(40312, {message: 'TLS/SSL Required'}.to_json)
+        routing.halt(401, {message: 'TLS/SSL Required'}.to_json)
 
       begin
         @auth_account = authenticated_account(routing.headers)
