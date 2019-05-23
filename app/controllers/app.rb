@@ -21,13 +21,12 @@ module LastWillFile
     route do |routing|
       response['Content-Type'] = 'application/json'
       # problema aqui
-      # secure_request?(routing) ||
-      #   routing.halt(403, {message: 'TLS/SSL Required'}.to_json)
+      secure_request?(routing) ||
+        routing.halt(403, {message: 'TLS/SSL Required'}.to_json)
 
       begin
         @auth_account = authenticated_account(routing.headers)
       rescue AuthToken::InvalidTokenError
-        puts "Planeta tierra"
         routing.halt 403, { message: 'Invalid auth token' }.to_json
       end
 
