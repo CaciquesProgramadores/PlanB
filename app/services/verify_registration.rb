@@ -22,6 +22,11 @@ module LastWillFile
       send_email_verification
     end
 
+    def call_rechecking
+      raise(InvalidRegistration, 'Username exists') unless username_available?
+      raise(InvalidRegistration, 'Email already used') unless email_available?
+    end
+
     def username_available?
       Account.first(username: @registration[:username]).nil?
     end

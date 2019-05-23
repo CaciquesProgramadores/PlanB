@@ -27,6 +27,7 @@ module LastWillFile
         # POST /api/v1/auth/authenticate
         routing.post do
           credentials = JsonRequestBody.parse_symbolize(request.body.read)
+          VerifyRegistration.new(Api.config, credentials).call_rechecking
           auth_account = AuthenticateAccount.call(credentials)
           auth_account.to_json
         rescue AuthenticateAccount::UnauthorizedError => e
