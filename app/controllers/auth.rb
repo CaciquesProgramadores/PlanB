@@ -19,6 +19,7 @@ module LastWillFile
           routing.halt 400, { message: e.message }.to_json
         rescue StandardError => e
           puts "ERROR VERIFYING REGISTRATION: #{e.inspect}"
+          puts "Hello world"
           puts e.message
           routing.halt 500
         end
