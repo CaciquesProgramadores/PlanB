@@ -8,7 +8,7 @@ module LastWillFile
     # Error for invalid registration details
     class InvalidRegistration < StandardError; end
 
-    SENDGRID_URL = 'https://api.sendgrid.com/v3/mail/send'
+    #SENDGRID_URL = 'https://api.sendgrid.com/v3/mail/send'
 
     def initialize(config, registration)
       @config = config
@@ -50,7 +50,7 @@ module LastWillFile
       HTTP.auth(
         "Bearer #{@config.SENDGRID_API_KEY}"
       ).post(
-        SENDGRID_URL,
+        @config.SENDGRID_URL,
         json: {
           personalizations: [{
             to: [{ 'email' => @registration[:email] }]
