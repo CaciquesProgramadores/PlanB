@@ -22,7 +22,7 @@ module LastWillFile
           )
 
           { data: inheritor }.to_json
-        rescue GetDocumentQuery::ForbiddenError => e
+        rescue GetInheritorQuery::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
         rescue GetInheritorQuery::NotFoundError => e
           routing.halt 404, { message: e.message }.to_json

@@ -36,6 +36,27 @@ module LastWillFile
       self.description_secure = SecureDB.encrypt(plaintext)
     end
 
+    def to_h
+      {
+        type: 'note',
+        attributes: {
+          id: id,
+          name: name,
+          repo_url: 'No'
+        }
+      }
+    end
+
+    def full_details
+      to_h.merge(
+        relationships: {
+          owner: owner,
+          authorises: authorises,
+          inheritors: inheritors
+        }
+      )
+    end
+
     # rubocop:disable MethodLength
     def to_json(options = {})
       JSON(

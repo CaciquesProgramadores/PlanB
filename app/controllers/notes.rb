@@ -1,65 +1,99 @@
 # frozen_string_literal: true
 
-require 'roda'
 require_relative './app'
 
 # rubocop:disable Metrics/BlockLength
 module LastWillFile
   # Web controller for Credence API
   class Api < Roda
-      route('notes') do |routing|
-        @note_route = "#{@api_root}/notes"
+    route('notes') do |routing|
+      unauthorized_message = { message: 'Unauthorized Request' }.to_json
+      routing.halt(403, unauthorized_message) unless @auth_account
 
-        routing.on String do |notee_id|
-          routing.on 'inheritors' do
-            @inheritor_route = "#{@api_root}/notes/#{notee_id}/inheritors"
+      @note_route = "#{@api_root}/notes"
+      routing.on String do |note_id|
+        @req_note = Note.first(id: note_id)
 
-            # GET api/v1/notes/[notee_id]/inheritors/[inh_id]
-            routing.get String do |inh_id|
-              doc = Inheritor.where(note_id: notee_id, id: inh_id).first
-              doc ? doc.to_json : raise('Inheritor not found')
-            rescue StandardError => e
-              routing.halt 404, { message: e.message }.to_json
-            end
+        # GET api/v1/notes/[ID]
+        routing.get do
+          note = GetNoteQuery.call(
+            account: @auth_account, note: @req_note
+          )
 
-            # GET api/v1/notes/[notee_id]/inheritors
-            routing.get do
-              output = { data: Note.first(id: notee_id).inheritors }
-              JSON.pretty_generate(output)
-            rescue StandardError
-              routing.halt 404, { message: 'Could not find Inheritors' }.to_json
-            end
+          { data: note }.to_json
+        rescue GetNoteQuery::ForbiddenError => e
+          routing.halt 403, { message: e.message }.to_json
+        rescue GetNoteQuery::NotFoundError => e
+          routing.halt 404, { message: e.message }.to_json
+        rescue StandardError => e
+          puts "FIND NOTE ERROR: #{e.inspect}"
+          routing.halt 500, { message: 'API server error' }.to_json
+        end
 
-            # POST api/v1/notes/[notee_id]/inheritors
-            routing.post do
-              new_data = JSON.parse(routing.body.read)
-              proj = Note.first(id: notee_id)
-              new_doc = proj.add_inheritor(new_data)
-              raise 'Could not save inheritor' unless new_doc
+        routing.on('inheritors') do
+          # POST api/v1/notes/[note_id]/inheritors
+          routing.post do
+            new_inheritor = CreateInheritor.call(
+              account: @auth_account,
+              note: @req_note,
+              inheritor_data: JSON.parse(routing.body.read)
+            )
 
-              response.status = 201
-              response['Location'] = "#{@doc_route}/#{new_doc.id}"
-              { message: 'Inheritor saved', data: new_doc }.to_json
-            rescue Sequel::MassAssignmentRestriction
-              routing.halt 400, { message: 'Illegal Request' }.to_json
-            rescue StandardError
-              routing.halt 500, { message: 'Database error' }.to_json
-            end
-          end
-
-          # GET api/v1/notes/[ID]
-          routing.get do
-            proj = Note.first(id: notee_id)
-            proj ? proj.to_json : raise('Note not found')
+            response.status = 201
+            response['Location'] = "#{@inheritor_route}/#{new_inheritor.id}"
+            { message: 'Inheritor saved', data: new_inheritor }.to_json
+          rescue CreateInheritor::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue CreateInheritor::IllegalRequestError => e
+            routing.halt 400, { message: e.message }.to_json
           rescue StandardError => e
-            routing.halt 404, { message: e.message }.to_json
+            puts "CREATE INHERITOR ERROR: #{e.inspect}"
+            routing.halt 500, { message: 'API server error' }.to_json
           end
         end
 
+        routing.on('authorises') do # rubocop:disable Metrics/BlockLength
+          # PUT api/v1/notes/[note_id]/authorises
+          routing.put do
+            req_data = JSON.parse(routing.body.read)
+
+            authorised = AddAuthorise.call(
+              account: @auth_account,
+              note: @req_note,
+              collab_email: req_data['email']
+            )
+
+            { data: authorised }.to_json
+          rescue AddAuthorise::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue StandardError
+            routing.halt 500, { message: 'API server error' }.to_json
+          end
+
+          # DELETE api/v1/notes/[note_id]/authorises
+          routing.delete do
+            req_data = JSON.parse(routing.body.read)
+            authorised = RemoveAuthorise.call(
+              req_username: @auth_account.username,
+              collab_email: req_data['email'],
+              note_id: note_id
+            )
+
+            { message: "#{authorised.username} removed from note",
+            data: authorised }.to_json
+          rescue RemoveAuthorise::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue StandardError
+            routing.halt 500, { message: 'API server error' }.to_json
+          end
+        end
+      end
+
+      routing .is do
         # GET api/v1/notes
         routing.get do
-          account = Account.first(username: @auth_account['username'])
-          notes = account.notes
+          notes = NotePolicy::AccountScope.new(@auth_account).viewable
+
           JSON.pretty_generate(data: notes)
         rescue StandardError
           routing.halt 403, { message: 'Could not find any notes' }.to_json
@@ -68,17 +102,18 @@ module LastWillFile
         # POST api/v1/notes
         routing.post do
           new_data = JSON.parse(routing.body.read)
-          new_proj = Note.new(new_data)
-          raise('Could not save note') unless new_proj.save
+          new_proj = @auth_account.add_owned_note(new_data)
 
           response.status = 201
-          response['Location'] = "#{@proj_route}/#{new_proj.id}"
+          response['Location'] = "#{@note_route}/#{new_proj.id}"
           { message: 'Note saved', data: new_proj }.to_json
         rescue Sequel::MassAssignmentRestriction
           routing.halt 400, { message: 'Illegal Request' }.to_json
-        rescue StandardError => e
-          routing.halt 500, { message: e.message }.to_json
+        rescue StandardError
+          routing.halt 500, { message: 'API server error' }.to_json
         end
       end
+    end
   end
 end
+# rubocop:enable Metrics/BlockLength
