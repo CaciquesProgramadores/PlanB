@@ -30,8 +30,8 @@ module LastWillFile
           # VerifyRegistration.new(Api.config, credentials).call_rechecking
           auth_account = AuthenticateAccount.call(credentials)
 
-          #{ data: auth_account }.to_json
-          auth_account.to_json
+          { data: auth_account }.to_json
+          #auth_account.to_json
         rescue AuthenticateAccount::UnauthorizedError => e
           puts [e.class, e.message].join ': '
           routing.halt '403', { message: 'Invalid credentials' }.to_json
