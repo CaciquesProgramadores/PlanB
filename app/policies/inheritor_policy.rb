@@ -8,15 +8,15 @@ class InheritorPolicy
   end
 
   def can_view?
-    account_owns_note? || account_executers_on_note?
+    account_owns_note? || account_authorises_on_note?
   end
 
   def can_edit?
-    account_owns_note? || account_executers_on_note?
+    account_owns_note? || account_authorises_on_note?
   end
 
   def can_delete?
-    account_owns_note? || account_executers_on_note?
+    account_owns_note? || account_authorises_on_note?
   end
 
   def summary
@@ -33,7 +33,7 @@ class InheritorPolicy
     @inheritor.note.owner == @account
   end
 
-  def account_executers_on_note?
-    @inheritor.note.executers.include?(@account)
+  def account_authorises_on_note?
+    @inheritor.note.authorises.include?(@account)
   end
 end
