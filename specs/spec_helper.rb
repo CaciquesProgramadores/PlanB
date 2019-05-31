@@ -9,12 +9,18 @@ require 'yaml'
 require_relative 'test_load_all'
 
 def wipe_database
-  #app.DB[:inheritors].delete
-  #app.DB[:notes].delete
-  #app.DB[:accounts].delete
   LastWillFile::Inheritor.map(&:destroy)
   LastWillFile::Note.map(&:destroy)
   LastWillFile::Account.map(&:destroy)
+end
+
+def auth_header(account_data)
+  auth = LastWillFile::AuthenticateAccount.call(
+    username: account_data['username'],
+    password: account_data['password']
+  )
+
+  "Bearer #{auth[:attributes][:auth_token]}"
 end
 
 DATA = {} # rubocop:disable Style/MutableConstant

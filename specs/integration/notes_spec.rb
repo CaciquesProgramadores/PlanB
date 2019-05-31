@@ -7,59 +7,94 @@ describe 'Test Note Handling' do
 
   before do
     wipe_database
+
+    @account_data = DATA[:accounts][0]
+    @wrong_account_data = DATA[:accounts][1]
+
+    @account = LastWillFile::Account.create(@account_data)
+    @wrong_account = LastWillFile::Account.create(@wrong_account_data)
+
+    header 'CONTENT_TYPE', 'application/json'
   end
 
+
   describe 'Getting Notes' do
-=begin
-    it 'HAPPY: should be able to get list of all notes' do
-      LastWillFile::Note.create(DATA[:notes][0]).save
-      LastWillFile::Note.create(DATA[:notes][1]).save
+    describe 'Getting list of notes' do
+      before do
+        @account.add_owned_note(DATA[:notes][0])
+        @account.add_owned_note(DATA[:notes][1])
+      end
 
-      get 'api/v1/notes'
+      it 'HAPPY: should get list for authorized account' do
+        header 'AUTHORIZATION', auth_header(@account_data)
+        get 'api/v1/notes'
+        _(last_response.status).must_equal 200
+
+        result = JSON.parse last_response.body
+        _(result['data'].count).must_equal 2
+      end
+
+      it 'BAD: should not process without authorization' do
+        get 'api/v1/notes'
+        _(last_response.status).must_equal 403
+
+        result = JSON.parse last_response.body
+        _(result['data']).must_be_nil
+      end
+    end
+   
+    it 'HAPPY: should be able to get details of a single notes' do
+      proj = @account.add_owned_note(DATA[:notes][0])
+
+      header 'AUTHORIZATION', auth_header(@account_data)
+      get "/api/v1/notes/#{proj.id}"
       _(last_response.status).must_equal 200
 
-      result = JSON.parse last_response.body
-      _(result['data'].count).must_equal 2
-    end
-=end
-    it 'HAPPY: should be able to get details of a single note' do
-      existing_proj = DATA[:notes][1]
-      LastWillFile::Note.create(existing_proj).save
-      id = LastWillFile::Note.first.id
-
-      get "/api/v1/notes/#{id}"
-      _(last_response.status).must_equal 200
-
-      result = JSON.parse last_response.body
-      _(result['attributes']['id']).must_equal id
-      _(result['attributes']['description']).must_equal existing_proj['description']
+      result = JSON.parse(last_response.body)['data']
+      _(result['attributes']['id']).must_equal proj.id
+      _(result['attributes']['title']).must_equal proj.title
     end
 
-    it 'SAD: should return error if unknown note requested' do
+    it 'SAD: should return error if unknown notes requested' do
+      header 'AUTHORIZATION', auth_header(@account_data)
       get '/api/v1/notes/foobar'
 
       _(last_response.status).must_equal 404
     end
 
-    it 'SECURITY: should prevent basic SQL injection targeting IDs' do
-      LastWillFile::Note.create(description: 'New Note', title: 'titulo 1')
-      LastWillFile::Note.create(description: 'Newer Note', title: 'titulo 2')
-      get 'api/v1/projects/2%20or%20id%3E0'
+    it 'BAD AUTHORIZATION: should not get notes with wrong authorization' do
+      proj = @account.add_owned_note(DATA[:notes][0])
 
-      # deliberately not reporting error -- don't give attacker information
+      header 'AUTHORIZATION', auth_header(@wrong_account_data)
+      get "/api/v1/notes/#{proj.id}"
+      _(last_response.status).must_equal 403
+
+      result = JSON.parse last_response.body
+      _(result['attributes']).must_be_nil
+    end
+
+    it 'BAD SQL VULNERABILTY: should prevent basic SQL injection of id' do
+      @account.add_owned_note(DATA[:notes][0])
+      @account.add_owned_note(DATA[:notes][1])
+
+      header 'AUTHORIZATION', auth_header(@account_data)
+      get 'api/v1/notes/2%20or%20id%3E0'
+
+      # deliberately not reporting detection -- don't give attacker information
       _(last_response.status).must_equal 404
       _(last_response.body['data']).must_be_nil
     end
   end
 
-  describe 'Creating New Notes' do
+  describe 'Creating New notes' do
     before do
-      @req_header = { 'CONTENT_TYPE' => 'application/json' }
-      @notes_data = DATA[:notes][1]
+      @proj_data = DATA[:notes][0]
     end
 
     it 'HAPPY: should be able to create new notes' do
-      post 'api/v1/notes', @notes_data.to_json, @req_header
+      header 'AUTHORIZATION', auth_header(@account_data)
+      post 'api/v1/notes', @proj_data.to_json
+
       _(last_response.status).must_equal 201
       _(last_response.header['Location'].size).must_be :>, 0
 
@@ -67,26 +102,29 @@ describe 'Test Note Handling' do
       proj = LastWillFile::Note.first
 
       _(created['id']).must_equal proj.id
-      _(created['description']).must_equal @notes_data['description']
+      _(created['title']).must_equal @proj_data['title']
+      _(created['description']).must_equal @proj_data['description']
+    end
+
+    it 'SAD: should not create new note without authorization' do
+      post 'api/v1/notes', @proj_data.to_json
+
+      created = JSON.parse(last_response.body)['data']
+
+      _(last_response.status).must_equal 403
+      _(last_response.header['Location']).must_be_nil
+      _(created).must_be_nil
     end
 
     it 'SECURITY: should not create note with mass assignment' do
-      bad_data = @notes_data.clone
+      bad_data = @proj_data.clone
       bad_data['created_at'] = '1900-01-01'
-      post 'api/v1/notes', bad_data.to_json, @req_header
+
+      header 'AUTHORIZATION', auth_header(@account_data)
+      post 'api/v1/notes', bad_data.to_json
 
       _(last_response.status).must_equal 400
       _(last_response.header['Location']).must_be_nil
-    end
-
-    it 'SECURITY: should secure sensitive attributes' do
-      proj = DATA[:notes][1]
-      LastWillFile::Note.create(proj).save
-      store_note1 = LastWillFile::Note.first
-      store_note2 = app.DB[:notes].first
-
-      _(store_note1['description_secure']).wont_equal proj['description']
-      _(store_note2['description_secure']).wont_equal proj['description']
     end
   end
 end
