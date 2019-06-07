@@ -18,10 +18,12 @@ module LastWillFile
     end
 
     # Inheritor for given requestor account
-    def self.call(requestor:, inheritor:)
+    # def self.call(requestor:, inheritor:)
+    def self.call(auth:, inheritor:)
       raise NotFoundError unless inheritor
 
-      policy = InheritorPolicy.new(requestor, inheritor)
+      # policy = InheritorPolicy.new(requestor, inheritor)
+      policy = InheritorPolicy.new(auth[:account], inheritor, auth[:scope])
       raise ForbiddenError unless policy.can_view?
 
       inheritor

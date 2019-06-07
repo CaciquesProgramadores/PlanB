@@ -17,10 +17,12 @@ module LastWillFile
       end
     end
 
-    def self.call(account:, note:)
+    #def self.call(account:, note:)
+    def self.call(auth:, note:)
       raise NotFoundError unless note
 
-      policy = NotePolicy.new(account, note)
+      #policy = NotePolicy.new(account, note)
+      policy = NotePolicy.new(auth[:account], note, auth[:scope])
       raise ForbiddenError unless policy.can_view?
 
       note.full_details.merge(policies: policy.summary)

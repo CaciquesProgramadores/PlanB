@@ -17,14 +17,16 @@ module LastWillFile
       end
     end
 
-    def self.call(account:, note:, inheritor_data:)
-      policy = NotePolicy.new(account, note)
+    # def self.call(account:, note:, inheritor_data:)
+      #policy = NotePolicy.new(account, note)
+    def self.call(auth:, note:, inheritor_data:)
+      policy = NotePolicy.new(auth[:account], note, auth[:scope])
       raise ForbiddenError unless policy.can_add_inheritors?
 
-      add_inheritor(note, inheritor_data)
-    end
+   #   add_inheritor(note, inheritor_data)
+    #end
 
-    def self.add_inheritor(note, inheritor_data)
+    #def self.add_inheritor(note, inheritor_data)
       note.add_inheritor(inheritor_data)
     rescue Sequel::MassAssignmentRestriction
       raise IllegalRequestError

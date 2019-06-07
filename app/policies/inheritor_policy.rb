@@ -2,21 +2,26 @@
 
  # Policy to determine if account can view a inheritor
 class InheritorPolicy
-  def initialize(account, inheritor)
+  # def initialize(account, inheritor)
+  def initialize(account, inheritor, auth_scope = nil)
     @account = account
     @inheritor = inheritor
+    @auth_scope = auth_scope
   end
 
   def can_view?
-    account_owns_note? || account_authorises_on_note?
+    #account_owns_note? || account_authorises_on_note?
+    can_read? && (account_owns_note? || account_authorises_on_note?)
   end
 
   def can_edit?
-    account_owns_note? || account_authorises_on_note?
+    # account_owns_note? || account_authorises_on_note?
+    can_write? && (account_owns_note? || account_authorises_on_note?)
   end
 
   def can_delete?
-    account_owns_note? || account_authorises_on_note?
+    # account_owns_note? || account_authorises_on_note?
+    can_write? && (account_owns_note? || account_authorises_on_note?)
   end
 
   def summary
@@ -28,6 +33,15 @@ class InheritorPolicy
   end
 
   private
+
+  def can_read?
+    @auth_scope ? @auth_scope.can_read?('inheritors') : false
+  end
+
+  def can_write?
+    @auth_scope ? @auth_scope.can_write?('inheritors') : false
+  end
+
 
   def account_owns_note?
     @inheritor.note.owner == @account

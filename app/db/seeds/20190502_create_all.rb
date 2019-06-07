@@ -29,9 +29,10 @@ def create_owned_notes
     account = LastWillFile::Account.first(username: owner['username'])
     owner['title'].each do |note_name|
       note_data = NOTE_INFO.find { |note| note['title'] == note_name }
-      LastWillFile::CreateNoteForOwner.call(
-        owner_id: account.id, note_data: note_data
-      )
+      #LastWillFile::CreateNoteForOwner.call(
+       # owner_id: account.id, note_data: note_data
+      #)
+      account.add_owned_note(note_data)
     end
   end
 end
