@@ -7,7 +7,7 @@ class AccountPolicy
     @requestor = requestor
     @account = account
   end
-
+  
   def can_view?
     self_request?
   end
