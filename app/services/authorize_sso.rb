@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'http'
+require 'pry'
 
 module LastWillFile
   # Find or create an SsoAccount based on Github code
@@ -26,7 +27,7 @@ module LastWillFile
       raise unless gh_response.status == 200
 
       account = GithubAccount.new(gh_response.parse)
-      myjson = { username: account.username, email: account.username }
+      { username: account.username, email: account.email }
       
     end
     
@@ -56,7 +57,11 @@ module LastWillFile
       end
 
       def email
-        @gh_account['email']
+        unless (@gh_account['email'] == nil) 
+          @gh_account['email'] 
+        else 
+          username
+        end
       end
     end
   end
