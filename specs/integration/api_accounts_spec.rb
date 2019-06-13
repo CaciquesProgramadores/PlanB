@@ -26,6 +26,7 @@ describe 'Test Account Handling' do
       _(account_data['password']).must_be_nil
       _(account_data['password_hash']).must_be_nil
       _(result['auth_token']).wont_be_nil
+
     end
   end
 
