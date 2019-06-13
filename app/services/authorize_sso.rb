@@ -21,7 +21,9 @@ module LastWillFile
                                  authorization: "token #{access_token}",
                                  accept: 'application/json')
                         .get(@config.GITHUB_ACCOUNT_URL)
-
+      puts 'buscando'
+      puts access_token
+      # puts gh_response
       raise unless gh_response.status == 200
 
       account = GithubAccount.new(gh_response.parse)
