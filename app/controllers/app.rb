@@ -4,7 +4,7 @@ require 'roda'
 require 'json'
 require_relative './helpers.rb'
 
-# rubocop:disable Metrics/BlockLength
+# # rubocop:disable Metrics/BlockLength
 module LastWillFile
   # Web controller for Credence API
   class Api < Roda
@@ -13,10 +13,6 @@ module LastWillFile
     plugin :multi_route
     plugin :request_headers
     include SecureRequestHelpers
-
-    #def secure_request?(routing)
-     # routing.scheme.casecmp(Api.config.SECURE_SCHEME).zero?
-    #end
 
     UNAUTH_MSG = { message: 'Unauthorized Request' }.to_json
 
@@ -27,7 +23,6 @@ module LastWillFile
         routing.halt(403, {message: 'TLS/SSL Required'}.to_json)
 
       begin
-        #@auth_account = authenticated_account(routing.headers)
         @auth = authorization(routing.headers)
         @auth_account = @auth[:account] if @auth
       rescue AuthToken::InvalidTokenError
@@ -49,4 +44,4 @@ module LastWillFile
     end
   end
 end
-# rubocop:enable Metrics/BlockLength
+# # rubocop:enable Metrics/BlockLength

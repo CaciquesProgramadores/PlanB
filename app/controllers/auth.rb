@@ -3,6 +3,8 @@
 require 'roda'
 require_relative './app'
 
+require 'pry'
+
 module LastWillFile
   # Web controller for Credence API
   class Api < Roda
@@ -40,11 +42,10 @@ module LastWillFile
 
       # POST /api/v1/auth/sso
       routing.post 'sso' do
-        auth_request = JsonRequestBody.parse_symbolize(request.body.read)
 
-        auth_account =
-          AuthorizeSso.new(Api.config)
-                      .call(auth_request[:access_token])
+        auth_request = JsonRequestBody.parse_symbolize(request.body.read)
+        #binding.pry
+        auth_account = AuthorizeSso.new(Api.config).call(auth_request[:access_token])
         { data: auth_account }.to_json
       rescue StandardError => error
         puts "FAILED to validate Github account: #{error.inspect}"

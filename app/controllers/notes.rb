@@ -17,9 +17,7 @@ module LastWillFile
 
         # GET api/v1/notes/[ID]
         routing.get do
-          #note = GetNoteQuery.call(
-            #account: @auth_account, note: @req_note
-          #)
+
           note = GetNoteQuery.call(auth: @auth, note: @req_note)
 
           { data: note }.to_json
@@ -80,7 +78,7 @@ module LastWillFile
             authorised = RemoveAuthorise.call(
               #req_username: @auth_account.username,
               auth: @auth,
-              authorise_email: req_data['email'],
+              authorises_email: req_data['email'],
               note_id: note_id
             )
 

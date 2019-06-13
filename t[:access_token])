@@ -1,0 +1,24 @@
+=> [32m#<LastWillFile::AuthorizeSso:0x000055be485f51c0[0m
+ @config[32m=[0m
+  [32m#<Econfig::Configuration:0x000055be481bb870[0m
+   @backends[32m=[0m
+    [32m#<Econfig::BackendCollection:0x000055be481bb820[0m
+     @backends[32m=[0m
+      [[[33m:memory[0m, [32m#<Econfig::Memory:0x000055be481bb6b8[0m @mutex[32m=[0m[32m#<Thread::Mutex:0x000055be481bb528[0m[32m>[0m, @options[32m=[0m{}[32m>[0m],
+       [[33m:env[0m, [32m#<Econfig::ENV:0x000055be481bb2d0[0m[32m>[0m],
+       [[33m:secrets[0m,
+        [32m#<Econfig::YAML:0x000055be481bb190[0m
+         @mutex[32m=[0m[32m#<Thread::Mutex:0x000055be481bb118[0m[32m>[0m,
+         @options[32m=[0m
+          {[31m[1;31m"[0m[31mDB_KEY[1;31m"[0m[31m[0m=>[31m[1;31m"[0m[31moZTgPaOQrnbuN9NgY4lAPErDOgnyKlp51IGsha6RxTk=[1;31m"[0m[31m[0m,
+           [31m[1;31m"[0m[31mMSG_KEY[1;31m"[0m[31m[0m=>[31m[1;31m"[0m[31mfhp4unpMufqsmvDb7p8mrjxXDFSTZ5LJsBR/dZb1hns=[1;31m"[0m[31m[0m,
+           [31m[1;31m"[0m[31mSENDGRID_URL[1;31m"[0m[31m[0m=>[31m[1;31m"[0m[31mhttps://api.sendgrid.com/v3/mail/send[1;31m"[0m[31m[0m,
+           [31m[1;31m"[0m[31mSENDGRID_API_KEY[1;31m"[0m[31m[0m=>[31m[1;31m"[0m[31mSG.EX8JJA_QQdCgGNaiB3_uNg.3DhEnkcYZ8ZIqAIDNMHJhosswY0QmfJnnKCg7AEqV4Q[1;31m"[0m[31m[0m},
+         @path[32m=[0m[31m[1;31m"[0m[31mconfig/secrets.yml[1;31m"[0m[31m[0m[32m>[0m],
+       [[33m:yaml[0m,
+        [32m#<Econfig::YAML:0x000055be481baf10[0m
+         @mutex[32m=[0m[32m#<Thread::Mutex:0x000055be481baec0[0m[32m>[0m,
+         @options[32m=[0m{[31m[1;31m"[0m[31mDB_FILENAME[1;31m"[0m[31m[0m=>[31m[1;31m"[0m[31mapp/db/store/dev.db[1;31m"[0m[31m[0m, [31m[1;31m"[0m[31mSECURE_SCHEME[1;31m"[0m[31m[0m=>[31m[1;31m"[0m[31mHTTP[1;31m"[0m[31m[0m, [31m[1;31m"[0m[31mGITHUB_ACCOUNT_URL[1;31m"[0m[31m[0m=>[31m[1;31m"[0m[31mhttps://api.github.com/user[1;31m"[0m[31m[0m},
+         @path[32m=[0m[31m[1;31m"[0m[31mconfig/app.yml[1;31m"[0m[31m[0m[32m>[0m]][32m>[0m,
+   @casts[32m=[0m{},
+   @default_write_backend[32m=[0m[33m:memory[0m[32m>[0m[32m>[0m
