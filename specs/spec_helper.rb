@@ -38,8 +38,9 @@ end
 
 DATA = {} # rubocop:disable Style/MutableConstant
 DATA[:accounts] = YAML.load File.read('app/db/seeds/accounts_seed.yml')
-DATA[:inheritors] = YAML.safe_load File.read('app/db/seeds/inheritor_seeds.yml')
-DATA[:notes] = YAML.safe_load File.read('app/db/seeds/notes_seeds.yml')
+DATA[:inheritors] = YAML.load File.read('app/db/seeds/inheritor_seeds.yml')
+DATA[:notes] = YAML.load File.read('app/db/seeds/notes_seeds.yml')
+DATA[:owners] = YAML.load File.read('app/db/seeds/owners_notes.yml')
 
 ## SSO fixtures
 GH_ACCOUNT_RESPONSE = YAML.load(
@@ -47,4 +48,3 @@ GH_ACCOUNT_RESPONSE = YAML.load(
 )
 GOOD_GH_ACCESS_TOKEN = GH_ACCOUNT_RESPONSE.keys.first
 SSO_ACCOUNT = YAML.load(File.read('specs/fixtures/sso_account.yml'))
-

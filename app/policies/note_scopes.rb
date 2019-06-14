@@ -3,7 +3,7 @@
 module LastWillFile
   # Policy to determine if account can view a note
   class NotePolicy
-    # Scope of note policies
+    # Scope of project policies
     class AccountScope
       def initialize(current_account, target_account = nil)
         target_account ||= current_account

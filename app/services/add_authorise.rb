@@ -12,7 +12,9 @@ module LastWillFile
 
     def self.call(account:, note:, collab_email:)
       invitee = Account.first(email: collab_email)
-      policy = AuthoriseRequestPolicy.new(note, account, invitee)
+      policy = AuthoriseRequestPolicy.new(
+        note, auth[:account], invitee, auth[:scope]
+      )
       raise ForbiddenError unless policy.can_invite?
 
       note.add_authorise(invitee)

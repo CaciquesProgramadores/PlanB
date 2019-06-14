@@ -3,7 +3,6 @@
 module LastWillFile
   # Policy to determine if an account can view a particular note
   class NotePolicy
-    # def initialize(account, note)
     def initialize(account, note, auth_scope = nil)
       @account = account
       @note = note
@@ -11,33 +10,27 @@ module LastWillFile
     end
 
     def can_view?
-      #account_is_owner? || account_is_authorises?
-      can_read? && (account_is_owner? || account_is_authorisor?)
+      can_read? && (account_is_owner? || account_is_authorises?)
     end
 
     def can_edit?
-      #account_is_owner? || account_is_authorises?
-      can_write? && (account_is_owner? || account_is_authorisor?)
+      can_write? && (account_is_owner? || account_is_authorises?)
     end
 
     def can_delete?
-      #account_is_owner?
       can_write? && account_is_owner?
     end
 
     def can_leave?
-      account_is_authorisor?
+      account_is_authorises?
     end
 
     def can_add_inheritors?
-      #account_is_owner? || account_is_authorises?
-      can_write? && (account_is_owner? || account_is_authorisor?)
-      
+      can_write? && (account_is_owner? || account_is_authorises?)
     end
 
     def can_remove_inheritors?
-      #account_is_owner? || account_is_authorises?
-      can_write? && (account_is_owner? || account_is_authorisor?)
+      can_write? && (account_is_owner? || account_is_authorises?)
     end
 
     def can_add_authorises?
@@ -49,8 +42,8 @@ module LastWillFile
     end
 
     def can_be_authorised?
-      # not (account_is_owner? or account_is_authorises?)
-      !(account_is_owner? || account_is_authorisor?)
+      #not (account_is_owner? or account_is_authorises?)
+      !(account_is_owner? || account_is_authorises?)
     end
 
     def summary
@@ -81,7 +74,7 @@ module LastWillFile
       @note.owner == @account
     end
 
-    def account_is_authorisor?
+    def account_is_authorises?
       @note.authorises.include?(@account)
     end
   end

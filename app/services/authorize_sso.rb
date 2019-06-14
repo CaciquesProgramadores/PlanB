@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'http'
+require 'pry'
 
 module LastWillFile
   # Find or create an SsoAccount based on Github code
@@ -17,6 +18,7 @@ module LastWillFile
     end
 
     def get_github_account(access_token)
+      
       gh_response = HTTP.headers(user_agent: 'Config Secure',
                                  authorization: "token #{access_token}",
                                  accept: 'application/json')
@@ -26,8 +28,9 @@ module LastWillFile
 
       account = GithubAccount.new(gh_response.parse)
       { username: account.username, email: account.email }
+      
     end
-
+    
     def find_or_create_sso_account(account_data)
       Account.first(email: account_data[:email]) ||
         Account.create_github_account(account_data)
@@ -54,7 +57,11 @@ module LastWillFile
       end
 
       def email
-        @gh_account['email']
+        unless (@gh_account['email'] == nil) 
+          @gh_account['email'] 
+        else 
+          username
+        end
       end
     end
   end

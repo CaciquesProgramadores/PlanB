@@ -58,10 +58,10 @@ module LastWillFile
       )
     end
 
-    # rubocop:disable MethodLength
+  #  # rubocop:disable MethodLength
     def to_json(options = {})
       JSON(to_h, options)
     end
-    # rubocop:enable MethodLength
+  #  # rubocop:enable MethodLength
   end
 end

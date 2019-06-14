@@ -20,7 +20,7 @@ class AuthToken
   class InvalidTokenError < StandardError; end
 
   # Create a token from a Hash payload
-  def self.create(payload, scope = AuthScope.new, expiration = ONE_WEEK)
+   def self.create(payload, scope = AuthScope.new, expiration = ONE_WEEK)
     tokenize(
       'payload' => payload,
       'scope' => scope,

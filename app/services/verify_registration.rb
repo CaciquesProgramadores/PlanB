@@ -39,7 +39,7 @@ module LastWillFile
       verification_url = @registration[:verification_url]
 
       <<~END_EMAIL
-        <H1>Credentia Registration Received<H1>
+        <H1>Planb Registration Received<H1>
         <p>Please <a href=\"#{verification_url}\">click here</a> to validate your
         email. You will be asked to set a password to activate your account.</p>
       END_EMAIL
