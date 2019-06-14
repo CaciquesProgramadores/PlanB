@@ -100,27 +100,7 @@ module LastWillFile
         rescue StandardError
           routing.halt 403, { message: 'Could not find any notes' }.to_json
         end
-=begin
-        # POST api/v1/notes
-        routing.post do
-          new_data = JSON.parse(routing.body.read)
-          #new_proj = @auth_account.add_owned_note(new_data)
 
-          new_proj = CreateNoteForOwner.call(
-            auth: @auth, note_data: new_data
-          )
-
-          response.status = 201
-          response['Location'] = "#{@note_route}/#{new_proj.id}"
-          { message: 'Note saved', data: new_proj }.to_json
-        rescue Sequel::MassAssignmentRestriction
-          routing.halt 400, { message: 'Illegal Request' }.to_json
-        rescue CreateNoteForOwner::ForbiddenError => e
-          routing.halt 403, { message: e.message }.to_json
-        rescue StandardError
-          routing.halt 500, { message: 'API server error' }.to_json
-        end
-=end
          # POST api/v1/notes
          routing.post do
           new_data = JSON.parse(routing.body.read)
