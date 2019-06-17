@@ -28,7 +28,11 @@ module LastWillFile
       create(username: github_account[:username],
              email: github_account[:email])
     end
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> c19c8e26711ffff6380b4fd1a3bf07fc654120c9
     def notes
       owned_notes + authorises
     end

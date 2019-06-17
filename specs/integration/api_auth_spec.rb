@@ -45,8 +45,12 @@ describe 'Test Authentication Routes' do
       _(result['attributes']).must_be_nil
     end
   end
+<<<<<<< HEAD
 
 
+=======
+  
+>>>>>>> c19c8e26711ffff6380b4fd1a3bf07fc654120c9
   describe 'SSO Authorization' do
     before do
       WebMock.enable!

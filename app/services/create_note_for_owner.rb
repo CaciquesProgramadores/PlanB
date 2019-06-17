@@ -14,8 +14,6 @@ module LastWillFile
       raise ForbiddenError unless auth[:scope].can_write?('notes')
 
       auth[:account].add_owned_note(note_data)
-      #Account.first(id: owner_id)
-             #.add_owned_note(note_data)
     end
   end
 end

@@ -17,6 +17,7 @@ module LastWillFile
     end
 
     def get_github_account(access_token)
+      
       gh_response = HTTP.headers(user_agent: 'Config Secure',
                                  authorization: "token #{access_token}",
                                  accept: 'application/json')
@@ -27,9 +28,10 @@ module LastWillFile
       raise unless gh_response.status == 200
 
       account = GithubAccount.new(gh_response.parse)
-      { username: account.username, email: account.email }
+      myjson = { username: account.username, email: account.username }
+      
     end
-
+    
     def find_or_create_sso_account(account_data)
       Account.first(email: account_data[:email]) ||
         Account.create_github_account(account_data)

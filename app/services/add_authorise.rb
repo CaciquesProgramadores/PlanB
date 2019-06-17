@@ -17,9 +17,6 @@ module LastWillFile
       )
       raise ForbiddenError unless policy.can_invite?
 
-      #policy = AuthoriseRequestPolicy.new(note, account, invitee)
-      #raise ForbiddenError unless policy.can_invite?
-
       note.add_authorise(invitee)
       invitee
     end
