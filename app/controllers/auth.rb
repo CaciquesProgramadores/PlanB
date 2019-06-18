@@ -37,7 +37,7 @@ module LastWillFile
         rescue AuthenticateAccount::UnauthorizedError => e
           puts [e.class, e.message].join ': '
           routing.halt '401', { message: 'Invalid credentials' }.to_json
-        end  
+        end
       end
 
       # POST /api/v1/auth/sso
@@ -50,7 +50,7 @@ module LastWillFile
         puts "FAILED to validate Github account: #{error.inspect}"
         puts error.backtrace
         routing.halt 400
-      end  
+      end
     end
   end
 end
