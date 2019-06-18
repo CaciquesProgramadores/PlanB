@@ -18,10 +18,6 @@ module LastWillFile
 
         routing.get do
           inheritor = GetInheritorQuery.call(
-<<<<<<< HEAD
-            # requestor: @auth_account, inheritor: @req_inheritor
-=======
->>>>>>> c19c8e26711ffff6380b4fd1a3bf07fc654120c9
             auth: @auth, inheritor: @req_inheritor
           )
 

@@ -14,15 +14,6 @@ module LastWillFile
     plugin :request_headers
     include SecureRequestHelpers
 
-<<<<<<< HEAD
-    UNAUTH_MSG = { message: 'Unauthorized Request' }.to_json
-
-    #def secure_request?(routing)
-     # routing.scheme.casecmp(Api.config.SECURE_SCHEME).zero?
-    #end
-
-=======
->>>>>>> c19c8e26711ffff6380b4fd1a3bf07fc654120c9
     UNAUTH_MSG = { message: 'Unauthorized Request' }.to_json
 
     route do |routing|
@@ -32,10 +23,6 @@ module LastWillFile
         routing.halt(403, {message: 'TLS/SSL Required'}.to_json)
 
       begin
-<<<<<<< HEAD
-        # @auth_account = authenticated_account(routing.headers)
-=======
->>>>>>> c19c8e26711ffff6380b4fd1a3bf07fc654120c9
         @auth = authorization(routing.headers)
         @auth_account = @auth[:account] if @auth
       rescue AuthToken::InvalidTokenError

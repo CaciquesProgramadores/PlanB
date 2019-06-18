@@ -29,11 +29,11 @@ module LastWillFile
         # POST /api/v1/auth/authenticate
         routing.post do
           credentials = JsonRequestBody.parse_symbolize(request.body.read)
-          # VerifyRegistration.new(Api.config, credentials).call_rechecking
+
           auth_account = AuthenticateAccount.call(credentials)
 
           { data: auth_account }.to_json
-          #auth_account.to_json
+
         rescue AuthenticateAccount::UnauthorizedError => e
           puts [e.class, e.message].join ': '
           routing.halt '401', { message: 'Invalid credentials' }.to_json
@@ -44,7 +44,6 @@ module LastWillFile
       routing.post 'sso' do
 
         auth_request = JsonRequestBody.parse_symbolize(request.body.read)
-        #binding.pry
         auth_account = AuthorizeSso.new(Api.config).call(auth_request[:access_token])
         { data: auth_account }.to_json
       rescue StandardError => error

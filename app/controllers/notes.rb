@@ -7,8 +7,8 @@ module LastWillFile
   # Web controller for Credence API
   class Api < Roda
     route('notes') do |routing|
-      # unauthorized_message = { message: 'Unauthorized Request' }.to_json
-      # routing.halt(403, unauthorized_message) unless @auth_account
+      #unauthorized_message = { message: 'Unauthorized Request' }.to_json
+      #routing.halt(403, unauthorized_message) unless @auth_account
       routing.halt(403, UNAUTH_MSG) unless @auth_account
 
       @note_route = "#{@api_root}/notes"
@@ -17,13 +17,6 @@ module LastWillFile
 
         # GET api/v1/notes/[ID]
         routing.get do
-<<<<<<< HEAD
-          # note = GetNoteQuery.call(
-            # account: @auth_account, note: @req_note
-          # )
-=======
-
->>>>>>> c19c8e26711ffff6380b4fd1a3bf07fc654120c9
           note = GetNoteQuery.call(auth: @auth, note: @req_note)
 
           { data: note }.to_json
@@ -40,7 +33,7 @@ module LastWillFile
           # POST api/v1/notes/[note_id]/inheritors
           routing.post do
             new_inheritor = CreateInheritor.call(
-             # account: @auth_account,
+              #account: @auth_account,
               auth: @auth,
               note: @req_note,
               inheritor_data: JSON.parse(routing.body.read)
@@ -107,27 +100,7 @@ module LastWillFile
         rescue StandardError
           routing.halt 403, { message: 'Could not find any notes' }.to_json
         end
-=begin
-        # POST api/v1/notes
-        routing.post do
-          new_data = JSON.parse(routing.body.read)
-          #new_proj = @auth_account.add_owned_note(new_data)
 
-          new_proj = CreateNoteForOwner.call(
-            auth: @auth, note_data: new_data
-          )
-
-          response.status = 201
-          response['Location'] = "#{@note_route}/#{new_proj.id}"
-          { message: 'Note saved', data: new_proj }.to_json
-        rescue Sequel::MassAssignmentRestriction
-          routing.halt 400, { message: 'Illegal Request' }.to_json
-        rescue CreateNoteForOwner::ForbiddenError => e
-          routing.halt 403, { message: e.message }.to_json
-        rescue StandardError
-          routing.halt 500, { message: 'API server error' }.to_json
-        end
-=end
          # POST api/v1/notes
          routing.post do
           new_data = JSON.parse(routing.body.read)
