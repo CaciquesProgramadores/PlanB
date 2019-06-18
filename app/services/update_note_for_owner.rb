@@ -16,7 +16,7 @@ module LastWillFile
 
       
       note = Note.first(id: note_data['attributes']['id'])
-      binding.pry
+      #binding.pry
       note.update(note_data)
     end
 
