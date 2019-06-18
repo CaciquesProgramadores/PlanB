@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'pry'
 module LastWillFile
   # Add a collaborator to another owner's existing note
   class GetNoteQuery

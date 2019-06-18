@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'pry'
 module LastWillFile
   # Add a authorises to another owner's existing note
   class CreateInheritor
@@ -20,12 +20,9 @@ module LastWillFile
     def self.call(auth:, note:, inheritor_data:)
       policy = NotePolicy.new(auth[:account], note, auth[:scope])
       raise ForbiddenError unless policy.can_add_inheritors?
-
-      #add_inheritor(inheritor_data)
-    #end
-
-    #def self.add_inheritor(inheritor_data)
+      
       note.add_inheritor(inheritor_data)
+      
     rescue Sequel::MassAssignmentRestriction
       raise IllegalRequestError
     end

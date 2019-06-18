@@ -22,7 +22,7 @@ module LastWillFile
     plugin :timestamps
     plugin :whitelist_security
     set_allowed_columns :description, :files_ids, :title
-
+    
     def inheritor_ids
       inheritors.map(&:id)
     end
@@ -58,10 +58,8 @@ module LastWillFile
       )
     end
 
-  #  # rubocop:disable MethodLength
     def to_json(options = {})
       JSON(to_h, options)
     end
-  #  # rubocop:enable MethodLength
   end
 end

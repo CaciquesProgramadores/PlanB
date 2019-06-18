@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
+require 'pry'
 
 describe 'Test Note Handling' do
   include Rack::Test::Methods
@@ -125,6 +126,19 @@ describe 'Test Note Handling' do
 
       _(last_response.status).must_equal 400
       _(last_response.header['Location']).must_be_nil
+    end
+
+    it 'SECURITY: should able to update note with owner permission only' do
+      updated = @account.add_owned_note(DATA[:notes][0])
+      updated.title = "Updated title"
+      updated.description = "Updated description."
+      #binding.pry
+
+      header 'AUTHORIZATION', auth_header(@account_data)
+      put 'api/v1/notes', updated.to_json
+
+      _(last_response.status).must_equal 201
+      _(last_response.header['Location'].size).must_be :>, 0
     end
   end
 end

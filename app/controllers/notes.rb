@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 require_relative './app'
+require 'pry'
 
 # rubocop:disable Metrics/BlockLength
 module LastWillFile
-  # Web controller for Credence API
+  # Web controller for LastwillFile API
   class Api < Roda
     route('notes') do |routing|
-      #unauthorized_message = { message: 'Unauthorized Request' }.to_json
-      #routing.halt(403, unauthorized_message) unless @auth_account
       routing.halt(403, UNAUTH_MSG) unless @auth_account
 
       @note_route = "#{@api_root}/notes"
@@ -29,6 +28,24 @@ module LastWillFile
           routing.halt 500, { message: 'API server error' }.to_json
         end
 
+        # DELETE api/v1/notes/[note_id]
+        routing.delete do
+          req_data = JSON.parse(routing.body.read)
+          delnote = RemoveNote.call(
+            #req_username: @auth_account.username,
+            auth: @auth,
+            #authorises_email: req_data['email'],
+            note_id: note_id
+          )
+
+          { message: "#{delnote.title} note removed",
+          data: authorised }.to_json
+        rescue RemoveNote::ForbiddenError => e
+          routing.halt 403, { message: e.message }.to_json
+        rescue StandardError
+          routing.halt 500, { message: 'API server error' }.to_json
+        end
+
         routing.on('inheritors') do
           # POST api/v1/notes/[note_id]/inheritors
           routing.post do
@@ -37,10 +54,11 @@ module LastWillFile
               auth: @auth,
               note: @req_note,
               inheritor_data: JSON.parse(routing.body.read)
+              #binding.pry
             )
-
+            
             response.status = 201
-            response['Location'] = "#{@inheritor_route}/#{new_inheritor.id}"
+            response['Location'] = "#{@doc_route}/#{new_inheritor.id}"
             { message: 'Inheritor saved', data: new_inheritor }.to_json
           rescue CreateInheritor::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
@@ -56,16 +74,12 @@ module LastWillFile
           # PUT api/v1/notes/[note_id]/authorises
           routing.put do
             req_data = JSON.parse(routing.body.read)
-
-            authorised = AddAuthorise.call(
-              #account: @auth_account,
-              auth: @auth,
-              note: @req_note,
-              authorises_email: req_data['email']
-            )
+            authorised = AddAuthorise.call(auth: @auth, project: @req_note, collab_email: req_data['email'])
 
             { data: authorised }.to_json
+            
           rescue AddAuthorise::ForbiddenError => e
+            binding.pry
             routing.halt 403, { message: e.message }.to_json
           rescue StandardError
             routing.halt 500, { message: 'API server error' }.to_json
@@ -119,6 +133,26 @@ module LastWillFile
         rescue StandardError
           routing.halt 500, { message: 'API server error' }.to_json
         end
+
+        # PUT api/v1/notes/
+        routing.put do
+          new_data = JSON.parse(routing.body.read)
+
+          new_proj = UpdateNoteForOwner.call(
+            auth: @auth, note_data: new_data
+          )
+
+          response.status = 201
+          response['Location'] = "#{@note_route}/#{new_proj.id}"
+          { message: 'Note saved', data: new_proj }.to_json
+        rescue Sequel::MassAssignmentRestriction
+          routing.halt 400, { message: 'Illegal Request' }.to_json
+        rescue UpdateNoteForOwner::ForbiddenError => e
+          routing.halt 403, { message: e.message }.to_json
+        rescue StandardError
+          routing.halt 500, { message: 'API server error' }.to_json
+        end
+
       end
     end
   end

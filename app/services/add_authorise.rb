@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'pry'
 module LastWillFile
   # Add a Authorise to another owner's existing note
   class AddAuthorise
@@ -10,14 +10,13 @@ module LastWillFile
       end
     end
 
-    def self.call(account:, note:, collab_email:)
+    def self.call(auth:, project:, collab_email:)
       invitee = Account.first(email: collab_email)
-      policy = AuthoriseRequestPolicy.new(
-        note, auth[:account], invitee, auth[:scope]
-      )
+      policy = AuthoriseRequestPolicy.new(project, auth[:account], invitee, auth[:scope])
+      binding.pry
       raise ForbiddenError unless policy.can_invite?
 
-      note.add_authorise(invitee)
+      project.add_authorise(invitee)
       invitee
     end
   end

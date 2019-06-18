@@ -43,7 +43,7 @@ module LastWillFile
 
     def can_be_authorised?
       #not (account_is_owner? or account_is_authorises?)
-      !(account_is_owner? || account_is_authorises?)
+      (account_is_owner? || account_is_authorises?)
     end
 
     def summary
