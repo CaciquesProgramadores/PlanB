@@ -83,6 +83,7 @@ describe 'Test Executers Handling' do
       delete "api/v1/notes/#{@proj.id}/authorises", req_data.to_json
 
       _(last_response.status).must_equal 403
+      
     end
   end
 end
