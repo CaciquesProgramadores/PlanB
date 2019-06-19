@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'pry'
 module LastWillFile
   # Policy to determine if an account can view a particular note
   class NotePolicy
@@ -41,9 +41,13 @@ module LastWillFile
       account_is_owner?
     end
 
+    def can_remove_notes?
+      can_write? && account_is_owner?
+    end
+
     def can_be_authorised?
       #not (account_is_owner? or account_is_authorises?)
-      !(account_is_owner? || account_is_authorises?)
+      (account_is_owner? || account_is_authorises?)
     end
 
     def summary
@@ -56,6 +60,7 @@ module LastWillFile
         can_delete_inheritors: can_remove_inheritors?,
         can_add_authorises: can_add_authorises?,
         can_remove_authorises: can_remove_authorises?,
+        can_remove_notes: can_remove_notes?,
         can_be_authorised: can_be_authorised?
       }
     end
@@ -71,7 +76,7 @@ module LastWillFile
     end
 
     def account_is_owner?
-      @note.owner == @account
+      @note.owner_id == @account.id
     end
 
     def account_is_authorises?
