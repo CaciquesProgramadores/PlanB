@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module LastWillFile
-   # Methods for controllers to mixin
-   module SecureRequestHelpers
+  # Methods for controllers to mixin
+  module SecureRequestHelpers
     class UnauthorizedRequestError < StandardError; end
     class NotFoundError < StandardError; end
 
