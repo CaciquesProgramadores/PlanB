@@ -14,12 +14,10 @@ module LastWillFile
       
       raise ForbiddenError unless auth[:scope].can_write?('notes')
 
-      
-      note = Note.first(id: note_data['attributes']['id'])
-      #binding.pry
-      note.update(note_data)
-    end
+      note = Note.find(id: note_data['id'].to_i)
+      no_key = note_data.reject{|k,v| k == "id"}
 
-    #end
+      note.update(no_key)
+    end
   end
 end

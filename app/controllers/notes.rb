@@ -28,24 +28,6 @@ module LastWillFile
           routing.halt 500, { message: 'API server error' }.to_json
         end
 
-        # DELETE api/v1/notes/[note_id]
-        routing.delete do
-          req_data = JSON.parse(routing.body.read)
-          delnote = RemoveNote.call(
-            #req_username: @auth_account.username,
-            auth: @auth,
-            #authorises_email: req_data['email'],
-            note_id: note_id
-          )
-
-          { message: "#{delnote.title} note removed",
-          data: authorised }.to_json
-        rescue RemoveNote::ForbiddenError => e
-          routing.halt 403, { message: e.message }.to_json
-        rescue StandardError
-          routing.halt 500, { message: 'API server error' }.to_json
-        end
-
         routing.on('inheritors') do
           # POST api/v1/notes/[note_id]/inheritors
           routing.post do
@@ -137,7 +119,7 @@ module LastWillFile
         # PUT api/v1/notes/
         routing.put do
           new_data = JSON.parse(routing.body.read)
-
+         
           new_proj = UpdateNoteForOwner.call(
             auth: @auth, note_data: new_data
           )
@@ -148,6 +130,23 @@ module LastWillFile
         rescue Sequel::MassAssignmentRestriction
           routing.halt 400, { message: 'Illegal Request' }.to_json
         rescue UpdateNoteForOwner::ForbiddenError => e
+          routing.halt 403, { message: e.message }.to_json
+        rescue StandardError
+          routing.halt 500, { message: 'API server error' }.to_json
+        end
+
+        # DELETE api/v1/notes/
+        routing.delete do
+          req_data = JSON.parse(routing.body.read)
+         
+          delnote = RemoveNote.call(
+            req_username: @auth_account.username,
+            note_id: req_data['id']
+          )
+
+          { message: "#{delnote.title} note removed",
+          data: authorised }.to_json
+        rescue RemoveNote::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
         rescue StandardError
           routing.halt 500, { message: 'API server error' }.to_json

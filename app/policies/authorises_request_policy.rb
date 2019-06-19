@@ -15,7 +15,7 @@ module LastWillFile
     def can_invite?
       can_write? &&
         (@requestor.can_add_authorises? && @target.can_be_authorised?)
-        binding.pry
+        #binding.pry
     end
 
     def can_remove?
