@@ -55,8 +55,8 @@ module LastWillFile
           personalizations: [{
             to: [{ 'email' => @registration[:email] }]
           }],
-          from: { 'email' => 'noreply@credentia.com' },
-          subject: 'Credent Registration Verification',
+          from: { 'email' => 'noreply@planb.com' },
+          subject: 'PlanB Registration Verification',
           content: [
             { type: 'text/html',
               value: email_body }
