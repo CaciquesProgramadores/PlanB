@@ -19,7 +19,7 @@ module LastWillFile
       puts "cuento 1 1"
       existence = Existence.first(email: existence_data[:email])
       puts "cuento 2"
-      existence_data = { email: existence_data['email'], timer: 10, type: 1 }
+      existence_data = { email: existence_data[:email], timer: 10, type: 1 }
       puts "cuento 3"
       if existence == nil
         auth[:account].add_owned_existence(existence_data)
