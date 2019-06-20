@@ -24,7 +24,13 @@ module LastWillFile
 
       begin
         @auth = authorization(routing.headers)
-        @auth_account = @auth[:account] if @auth
+
+        if @auth then
+          @auth_account = @auth[:account]
+          UpdateExistence.call(auth,@auth[:account])
+        end
+
+        # @auth_account = @auth[:account] if @auth
       rescue AuthToken::InvalidTokenError
         routing.halt 403, { message: 'Invalid auth token' }.to_json
       rescue AuthToken::ExpiredTokenError

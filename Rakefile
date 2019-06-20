@@ -76,6 +76,7 @@ namespace :db do
   task :delete do
     app.DB[:notes].delete
     app.DB[:inheritors].delete
+    app.DB[:existences].delete
   end
 
   desc 'Delete dev or test database file'

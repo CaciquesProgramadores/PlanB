@@ -25,6 +25,18 @@ module LastWillFile
           routing.halt 500, { message: 'API Server Error' }.to_json
         end
       end
+      # GET api/v1/accounts/existences
+      routing.on('existences') do
+        routing.get do
+          existences = GetExistencesQuery.call(
+            auth: @auth, account_id: @auth[:account].id
+          )
+          existences
+        rescue StandardError => e
+          puts "GET Existence ERROR: #{e.inspect}"
+          routing.halt 500, { message: 'API Server Error' }.to_json
+        end
+      end
 
       # POST api/v1/accounts
       routing.post do
