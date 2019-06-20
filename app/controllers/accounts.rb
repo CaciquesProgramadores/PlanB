@@ -31,7 +31,7 @@ module LastWillFile
           existences = GetExistencesQuery.call(
             auth: @auth, account_id: @auth[:account].id
           )
-          existences
+          { data: existences }.to_json
         rescue StandardError => e
           puts "GET Existence ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API Server Error' }.to_json
