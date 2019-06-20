@@ -14,7 +14,7 @@ module LastWillFile
 
       # raise ForbiddenError unless auth[:scope].can_write?('notes')
       puts "cuento 1"
-      puts existence_data['email']
+      puts existence_data
       puts "cuento 1 1"
       existence = Existence.first(email: existence_data['email'])
       puts "cuento 2"
