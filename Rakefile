@@ -2,6 +2,8 @@
 
 require 'rake/testtask'
 require './require_app'
+require 'sequel'
+#require 'sequel-seed'
 
 task :default => :spec
 
@@ -74,8 +76,8 @@ namespace :db do
 
   desc 'Delete database'
   task :delete do
-    app.DB[:notes].delete
     app.DB[:inheritors].delete
+    app.DB[:notes].delete
   end
 
   desc 'Delete dev or test database file'

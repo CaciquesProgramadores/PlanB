@@ -7,7 +7,7 @@ Sequel.seed(:development) do
     create_owned_notes
     create_inheritors
     #add_account_inheritors
-    add_authorises
+    add_executors
   end
 end
 
@@ -17,7 +17,7 @@ ACCOUNTS_INFO = YAML.load_file("#{DIR}/accounts_seed.yml")
 OWNER_INFO = YAML.load_file("#{DIR}/owners_notes.yml")
 NOTE_INFO = YAML.load_file("#{DIR}/notes_seeds.yml")
 INHERITOR_INFO = YAML.load_file("#{DIR}/inheritor_seeds.yml")
-CONTRIB_INFO = YAML.load_file("#{DIR}/notes_authorises.yml")
+CONTRIB_INFO = YAML.load_file("#{DIR}/notes_executors.yml")
 
 def create_accounts
   ACCOUNTS_INFO.each do |account_info|
@@ -60,12 +60,12 @@ def create_inheritors
   end
 end
 
-def add_authorises
+def add_executors
   contrib_info = CONTRIB_INFO
   contrib_info.each do |contrib|
     proj = LastWillFile::Note.first(title: contrib['title'])
-    contrib['authorises_email'].each do |email|
-      LastWillFile::AddAuthoriseToNote.call(
+    contrib['executors_email'].each do |email|
+      LastWillFile::AddExecutorToNote.call(
         email: email, note_id: proj.id
       )
     end
@@ -77,11 +77,11 @@ def add_account_inheritors
   acc_inh_info = ACC_INHERITORS_INFO
   acc_inh_info.each do |acc_inh|
     note = LastWillFile::Note.first(title: acc_inh['title'])
-    acc_inh['authorises_email'].each do |email|
+    acc_inh['executors_email'].each do |email|
       LastWillFile::Account.call(
         email: email, note_id: note.id
       )
-      #note.add_authorise(acc_inheritor)
+      #note.add_executor(acc_inheritor)
     end
   end
 end

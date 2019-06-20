@@ -10,14 +10,14 @@ module LastWillFile
     one_to_many :owned_notes, class: :'LastWillFile::Note', key: :owner_id
     #plugin :association_dependencies, owned_notes: :destroy
 
-    many_to_many :authorises,
+    many_to_many :executors,
                  class: :'LastWillFile::Note',
                  join_table: :accounts_notes,
-                 left_key: :authorise_id, right_key: :note_id
+                 left_key: :executor_id, right_key: :note_id
 
     plugin :association_dependencies,
            owned_notes: :destroy,
-           authorises: :nullify
+           executors: :nullify
       
     plugin :whitelist_security
     set_allowed_columns :username, :email, :password
@@ -30,7 +30,7 @@ module LastWillFile
     end
     
     def notes
-      owned_notes + authorises
+      owned_notes + executors
     end
 
     def password=(new_password)

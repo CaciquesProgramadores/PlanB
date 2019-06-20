@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module LastWillFile
-  # Add a authorise to another owner's existing note
-  class RemoveAuthorise
-    # Error for owner cannot be authorise
+  # Add a executor to another owner's existing note
+  class RemoveExecutor
+    # Error for owner cannot be executor
     class ForbiddenError < StandardError
       def message
         'You are not allowed to remove that person'
@@ -13,13 +13,13 @@ module LastWillFile
     def self.call(req_username:, collab_email:, note_id:)
       account = Account.first(username: req_username)
       note = Note.first(id: note_id)
-      authorise = Account.first(email: collab_email)
+      executor = Account.first(email: collab_email)
 
-      policy = AuthoriseRequestPolicy.new(note, account, authorise)
+      policy = ExecutorRequestPolicy.new(note, account, executor)
       raise ForbiddenError unless policy.can_remove?
 
-      note.remove_authorise(authorise)
-      authorise
+      note.remove_executor(executor)
+      executor
     end
   end
 end

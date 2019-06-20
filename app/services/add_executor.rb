@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 require 'pry'
 module LastWillFile
-  # Add a Authorise to another owner's existing note
-  class AddAuthorise
-    # Error for owner cannot be Authorise
+  # Add a executor to another owner's existing note
+  class AddExecutor
+    # Error for owner cannot be executor
     class ForbiddenError < StandardError
       def message
-        'You are not allowed to invite that person as Authorise'
+        'You are not allowed to invite that person as executor'
       end
     end
 
     def self.call(auth:, project:, collab_email:)
       invitee = Account.first(email: collab_email)
-      policy = AuthoriseRequestPolicy.new(project, auth[:account], invitee, auth[:scope])
+      policy = ExecutorRequestPolicy.new(project, auth[:account], invitee, auth[:scope])
       
       raise ForbiddenError unless policy.can_invite?
 
-      project.add_authorise(invitee)
+      project.add_executor(invitee)
       invitee
     end
   end

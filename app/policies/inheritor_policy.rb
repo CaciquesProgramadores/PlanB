@@ -9,15 +9,15 @@ class InheritorPolicy
   end
 
   def can_view?
-    can_read? && (account_owns_note? || account_authorises_on_note?)
+    can_read? && (account_owns_note? || account_executors_on_note?)
   end
 
   def can_edit?
-    can_write? && (account_owns_note? || account_authorises_on_note?)
+    can_write? && (account_owns_note? || account_executors_on_note?)
   end
 
   def can_delete?
-    can_write? && (account_owns_note? || account_authorises_on_note?)
+    can_write? && (account_owns_note? || account_executors_on_note?)
   end
 
   def summary
@@ -42,8 +42,8 @@ class InheritorPolicy
     @inheritor.note.owner == @account
   end
 
-  def account_authorises_on_note?
-    @inheritor.note.authorises.include?(@account)
+  def account_executors_on_note?
+    @inheritor.note.executors.include?(@account)
   end
 end
 

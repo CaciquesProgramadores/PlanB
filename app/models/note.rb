@@ -9,15 +9,15 @@ module LastWillFile
   class Note < Sequel::Model
     many_to_one :owner, class: :'LastWillFile::Account'
 
-    many_to_many :authorises,
+    many_to_many :executors,
                  class: :'LastWillFile::Account',
                  join_table: :accounts_notes,
-                 left_key: :note_id, right_key: :authorise_id
+                 left_key: :note_id, right_key: :executor_id
 
     one_to_many :inheritors
     plugin :association_dependencies,
            inheritors: :destroy,
-           authorises: :nullify
+           executors: :nullify
 
     plugin :timestamps
     plugin :whitelist_security
@@ -52,7 +52,7 @@ module LastWillFile
       to_h.merge(
         relationships: {
           owner: owner,
-          authorises: authorises,
+          executors: executors,
           inheritors: inheritors
         }
       )

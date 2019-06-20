@@ -3,7 +3,7 @@
 module LastWillFile
   # Add a collaborator to another owner's existing project
   class GetInheritorQuery
-     # Error for owner cannot be authorise
+     # Error for owner cannot be executor
      class ForbiddenError < StandardError
       def message
         'You are not allowed to access that inheritor'

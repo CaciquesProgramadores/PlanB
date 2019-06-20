@@ -2,9 +2,9 @@
 
 module LastWillFile
     # Add a collaborator to another owner's existing project
-    class AddAuthoriseToNote
+    class AddExecutorToNote
       # Error for owner cannot be collaborator
-      class OwnerNotAuthoriseError < StandardError
+      class OwnerNotExecutorError < StandardError
         def initialize(msg = nil)
           @credentials = msg
         end
@@ -15,12 +15,12 @@ module LastWillFile
       end
   
       def self.call(email:, note_id:)
-        authorise = Account.first(email: email)
+        executor = Account.first(email: email)
         note = Note.first(id: note_id)
-        raise(OwnerNotAuthoriseError) if note.owner.id == authorise.id
+        raise(OwnerNotExecutorError) if note.owner.id == executor.id
   
-        note.add_authorise(authorise)
-        authorise
+        note.add_executor(executor)
+        executor
       end
     end
   end

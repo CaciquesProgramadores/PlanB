@@ -1,8 +1,8 @@
 ---
   - title: feo 1
-    authorises_email:
+    executors_email:
       - furen@nthu.edu.tw
       - galit@gmail.com
   - title: feo 2
-    authorises_email:
+    executors_email:
       - galit@gmail.com

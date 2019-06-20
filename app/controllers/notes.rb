@@ -52,34 +52,34 @@ module LastWillFile
           end
         end
 
-        routing.on('authorises') do # rubocop:disable Metrics/BlockLength
-          # PUT api/v1/notes/[note_id]/authorises
+        routing.on('executors') do # rubocop:disable Metrics/BlockLength
+          # PUT api/v1/notes/[note_id]/executors
           routing.put do
             req_data = JSON.parse(routing.body.read)
-            authorised = AddAuthorise.call(auth: @auth, project: @req_note, collab_email: req_data['email'])
+            executord = AddExecutor.call(auth: @auth, project: @req_note, collab_email: req_data['email'])
 
-            { data: authorised }.to_json
+            { data: executord }.to_json
             
-          rescue AddAuthorise::ForbiddenError => e
+          rescue AddExecutor::ForbiddenError => e
             #binding.pry
             routing.halt 403, { message: e.message }.to_json
           rescue StandardError
             routing.halt 500, { message: 'API server error' }.to_json
           end
 
-          # DELETE api/v1/notes/[note_id]/authorises
+          # DELETE api/v1/notes/[note_id]/executors
           routing.delete do
             req_data = JSON.parse(routing.body.read)
-            authorised = RemoveAuthorise.call(
+            executord = RemoveExecutor.call(
               #req_username: @auth_account.username,
               auth: @auth,
-              authorises_email: req_data['email'],
+              executors_email: req_data['email'],
               note_id: note_id
             )
 
-            { message: "#{authorised.username} removed from note",
-            data: authorised }.to_json
-          rescue RemoveAuthorise::ForbiddenError => e
+            { message: "#{executord.username} removed from note",
+            data: executord }.to_json
+          rescue RemoveExecutor::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
           rescue StandardError
             routing.halt 500, { message: 'API server error' }.to_json
@@ -145,7 +145,7 @@ module LastWillFile
           )
 
           { message: "#{delnote.title} note removed",
-          data: authorised }.to_json
+          data: executord }.to_json
         rescue RemoveNote::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
         rescue StandardError

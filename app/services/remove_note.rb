@@ -3,9 +3,9 @@
 require'pry'
 
 module LastWillFile
-    # Add a authorise to another owner's existing note
+    # Add a executor to another owner's existing note
     class RemoveNote
-      # Error for owner cannot be authorise
+      # Error for owner cannot be executor
       class ForbiddenError < StandardError
         def message
           'You are not allowed to remove that note'

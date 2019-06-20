@@ -17,7 +17,7 @@ module LastWillFile
           @full_scope
         else
           @full_scope.select do |proj|
-            includes_authorise?(proj, @current_account)
+            includes_executor?(proj, @current_account)
           end
         end
       end
@@ -25,11 +25,11 @@ module LastWillFile
       private
 
       def all_notes(account)
-        account.owned_notes + account.authorises
+        account.owned_notes + account.executors
       end
 
-      def includes_authorise?(note, account)
-        note.authorises.include? account
+      def includes_executor?(note, account)
+        note.executors.include? account
       end
     end
   end
