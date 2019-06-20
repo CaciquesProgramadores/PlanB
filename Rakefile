@@ -2,8 +2,6 @@
 
 require 'rake/testtask'
 require './require_app'
-require 'sequel'
-#require 'sequel-seed'
 
 task :default => :spec
 
