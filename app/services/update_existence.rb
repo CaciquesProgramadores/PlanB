@@ -13,14 +13,11 @@ module LastWillFile
     def self.call(auth:, existence_data:)
 
       # raise ForbiddenError unless auth[:scope].can_write?('notes')
-      puts "cuento 1"
-      puts existence_data
-      puts existence_data[:email]
-      puts "cuento 1 1"
+
       existence = Existence.first(email: existence_data[:email])
-      puts "cuento 2"
+
       existence_data = { email: existence_data[:email], timer: 10, type: 1 }
-      puts "cuento 3"
+
       if existence == nil
         auth[:account].add_owned_existence(existence_data)
       else
