@@ -29,13 +29,13 @@ module LastWillFile
       owner_ids.each do |i|
         emails.push(Account.find(id: i).email)
       end
-      #get existences
-      existences = []
-      emails.each do |e|
-        existences.push(Account.find(email: e))
-      end
-      
-      existences
+      # get existences
+      # existences = []
+      # emails.each do |e|
+      #   existences.push(Account.find(email: e))
+      # end
+
+      emails
     end
   end
 end
