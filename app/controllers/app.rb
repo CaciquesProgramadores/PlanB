@@ -27,7 +27,7 @@ module LastWillFile
 
         if @auth then
           @auth_account = @auth[:account]
-          # UpdateExistence.call(auth: @auth, existence_data: @auth[:account])
+          UpdateExistence.call(auth: @auth, existence_data: @auth[:account])
         end
 
         # @auth_account = @auth[:account] if @auth
