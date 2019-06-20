@@ -83,7 +83,6 @@ namespace :db do
   task :drop do
     if app.environment == :production
       puts 'Cannot wipe production database!'
-      return
     end
 
     FileUtils.rm(app.config.DB_FILENAME)
