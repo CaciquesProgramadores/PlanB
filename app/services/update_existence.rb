@@ -21,7 +21,7 @@ module LastWillFile
       existence_data = { email: existence_data['email'], timer: 10, type: 1 }
       puts "cuento 3"
       if existence == nil
-        auth[:account].add_existence(existence_data)
+        auth[:account].add_owned_existence(existence_data)
       else
         no_key = existence_data.reject{|k,v| k == "id" || k == "email"}
         existence.update(no_key)
