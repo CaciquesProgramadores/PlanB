@@ -75,14 +75,13 @@ namespace :db do
   desc 'Delete database'
   task :delete do
     app.DB[:inheritors].delete
-    app.DB[:notes].delete
+    app.DB[:existences].delete
   end
 
   desc 'Delete dev or test database file'
   task :drop do
     if app.environment == :production
       puts 'Cannot wipe production database!'
-      return
     end
 
     FileUtils.rm(app.config.DB_FILENAME)

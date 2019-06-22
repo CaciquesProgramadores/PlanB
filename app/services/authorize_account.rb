@@ -9,17 +9,17 @@ module LastWillFile
           'You are not allowed to access that account'
         end
       end
-  
+
       def self.call(auth:, username:, auth_scope:)
         account = Account.first(username: username)
         policy = AccountPolicy.new(auth[:account], account)
         policy.can_view? ? account : raise(ForbiddenError)
-  
+
         raise ForbiddenError unless policy.can_view?
-  
+
         account_and_token(account, auth_scope)
       end
-  
+
       def self.account_and_token(account, auth_scope)
         {
           type: 'authorized_account',
@@ -30,4 +30,4 @@ module LastWillFile
         }
       end
     end
-  end
+end

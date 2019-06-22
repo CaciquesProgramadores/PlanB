@@ -8,6 +8,8 @@ module LastWillFile
   # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_notes, class: :'LastWillFile::Note', key: :owner_id
+
+    one_to_many :owned_existences, class: :'LastWillFile::Existence', key: :owner_id
     #plugin :association_dependencies, owned_notes: :destroy
 
     many_to_many :executors,
@@ -28,7 +30,7 @@ module LastWillFile
       create(username: github_account[:username],
              email: github_account[:email])
     end
-    
+
     def notes
       owned_notes + executors
     end
@@ -46,7 +48,7 @@ module LastWillFile
       JSON(
         {
           type: 'account',
-          attributes: { 
+          attributes: {
             username: username,
             email: email
           }
