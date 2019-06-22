@@ -35,23 +35,29 @@ module LastWillFile
     def to_json(options = {})
       JSON(
         {
-            type: 'inheritor',
-            attributes: {
-              id: id,
-              description: description,
-              relantionship: relantionship,
-              emails: emails,
-              phones: phones,
-              nickname: nickname,
-              pgp: pgp,
-              fullname: fullname
-          },
-          include: {
-            note: note
-          }
+          type:       'inheritor',
+          attributes: public_attributes_hash,
+          include:    includes_hash
         }, options
       )
     end
     # rubocop:enable MethodLength
+
+    def public_attributes_hash
+      {
+        id: id,
+        description: description,
+        relantionship: relantionship,
+        emails: emails,
+        phones: phones,
+        nickname: nickname,
+        pgp: pgp,
+        fullname: fullname
+      }
+    end
+
+    def includes_hash
+      { note: note }
+    end
   end
 end

@@ -47,13 +47,17 @@ module LastWillFile
     def to_json(options = {})
       JSON(
         {
-          type: 'account',
-          attributes: {
-            username: username,
-            email: email
-          }
+          type:       'account',
+          attributes: public_attributes_hash
         }, options
       )
+    end
+
+    def public_attributes_hash
+      {
+        username: username,
+        email:    email
+      }
     end
   end
 end

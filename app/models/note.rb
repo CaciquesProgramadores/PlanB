@@ -38,28 +38,36 @@ module LastWillFile
 
     def to_h
       {
-        type: 'note',
-        attributes: {
+        type:       'note',
+        attributes: public_attributes_hash
+      }
+    end
+
+    def full_details
+      to_h.merge(relationships: relationships_hash)
+    end
+
+    def to_json(options = {})
+      JSON(to_h, options)
+    end
+
+    private
+
+    def public_attributes_hash
+      {
           id: id,
           description: description,
           files_ids: files_ids,
           title: title
         }
+    end
+
+    def relationships_hash
+      {
+        owner: owner,
+        executors: executors,
+        inheritors: inheritors
       }
-    end
-
-    def full_details
-      to_h.merge(
-        relationships: {
-          owner: owner,
-          executors: executors,
-          inheritors: inheritors
-        }
-      )
-    end
-
-    def to_json(options = {})
-      JSON(to_h, options)
     end
   end
 end

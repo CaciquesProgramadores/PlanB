@@ -18,7 +18,6 @@ module LastWillFile
     end
 
     def get_github_account(access_token)
-      
       gh_response = HTTP.headers(user_agent: 'Config Secure',
                                  authorization: "token #{access_token}",
                                  accept: 'application/json')

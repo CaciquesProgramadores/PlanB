@@ -21,7 +21,7 @@ module LastWillFile
     def to_json(options = {})
       JSON(
         {
-          salt: Base64.strict_encode64(@salt),
+          salt:   Base64.strict_encode64(@salt),
           digest: Base64.strict_encode64(@digest)
         },
         options

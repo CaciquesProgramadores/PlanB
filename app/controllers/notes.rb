@@ -32,9 +32,8 @@ module LastWillFile
           # POST api/v1/notes/[note_id]/inheritors
           routing.post do
             new_inheritor = CreateInheritor.call(
-              #account: @auth_account,
-              auth: @auth,
-              note: @req_note,
+              auth:     @auth,
+              note:     @req_note,
               inheritor_data: JSON.parse(routing.body.read)
               #binding.pry
             )
@@ -92,18 +91,15 @@ module LastWillFile
           @invitation_info = JsonRequestBody.parse_symbolize(request.body.read)
           
           routing.post do
-            #binding.pry
             InviteInheritor.new(Api.config, @auth, @invitation_info).call
 
             response.status = 202
-            #binding.pry
+
             { message: 'Invitation email sent' }.to_json
             
           rescue InviteInheritor::InvalidInvitation => e
-            #binding.pry
             routing.halt 400, { message: e.message }.to_json
           rescue StandardError => e
-            #binding.pry
             puts "ERROR SENDING EMAIL INVITATION: #{e.inspect}"
             routing.halt 500
           end
@@ -174,7 +170,6 @@ module LastWillFile
         rescue StandardError
           routing.halt 500, { message: 'API server error' }.to_json
         end
-
       end
     end
   end

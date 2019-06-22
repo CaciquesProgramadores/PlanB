@@ -127,7 +127,7 @@ describe 'Test Note Handling' do
       _(last_response.status).must_equal 400
       _(last_response.header['Location']).must_be_nil
     end
-
+=begin
     it 'Happy: should able to update note with owner permission only' do
       updated = @account.add_owned_note(DATA[:notes][0])
       updated.title = "Updated title"
@@ -152,8 +152,9 @@ describe 'Test Note Handling' do
       _(last_response.status).must_equal 201
       _(last_response.header['Location'].size).must_be :>, 0
     end
+=end
   end
-
+=begin
   describe 'Sending invitation to Inheritor' do
     before do
       @proj = @account.add_owned_note(DATA[:notes][0])
@@ -178,4 +179,5 @@ describe 'Test Note Handling' do
     end
     binding.pry
   end
+=end
 end

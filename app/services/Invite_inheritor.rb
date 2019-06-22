@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 require 'http'
+require 'pry'
 
 module LastWillFile
   # Send email verfification email
   class InviteInheritor
     # Error for invalid registration details
     class InvalidInvitation < StandardError; end
-
-    #SENDGRID_URL = 'https://api.sendgrid.com/v3/mail/send'
 
     def initialize(config, auth, invitation_info)
       @config = config
@@ -17,38 +16,32 @@ module LastWillFile
     end
 
     def call
-      #raise(InvalidRegistration, 'Username exists') unless username_available?
-      raise(InvalidInvitation, 'Email already used') unless email_available?
+      raise(InvalidInvitation, 'Email already a member') unless email_available?
 
       send_email_invitation
     end
 
     def call_rechecking
-      #raise(InvalidRegistration, 'Username exists') unless username_available?
-      raise(InvalidInvitation, 'Email already used') unless email_available?
+      raise(InvalidInvitation, 'Email already a member') unless email_available?
     end
 
-    #def username_available?
-      #Account.first(username: @invitation_info[:username]).nil?
-    #end
-
     def email_available?
-      Account.first(email: @invitation_info[:inh_email]).nil?
+      Account.first(email: @invitation_info[:data]['inh_email']).nil?
     end
 
     def email_body
-      register_url = "#@invitation_info[:register_url]"
+      verification_url = @invitation_info[:data]['verification_url']
 
       <<~END_EMAIL
         <H1>Planb Invitation Received<H1>
-        <p>You been invited to planb by a member with this email address " #{@auth[:account].email}Please <a href=\"#{@invitation_info[:verification_url]}\">click here</a> to validate your
+        <p>You been invited to planb by a member with this email address " #{@auth[:account].email}Please <a href=\"#{verification_url}\">click here</a> to validate your
         email. You will be asked to set a password to activate your account.</p>
       END_EMAIL
     end
 
     # rubocop:disable Metrics/MethodLength
     def send_email_invitation
-      email = @invitation_info[:inh_email].strip
+      email = @invitation_info[:data]['inh_email']#.strip
       HTTP.auth(
         "Bearer #{@config.SENDGRID_API_KEY}"
       ).post(
@@ -65,9 +58,7 @@ module LastWillFile
           ]
         }
       )
-     # binding.pry
     rescue StandardError => e
-     # binding.pry
       puts "EMAIL ERROR: #{e.inspect}"
       raise(InvalidInvitation,
             'Could not send invitation ; please check email address')
