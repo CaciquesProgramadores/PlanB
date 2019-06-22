@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative './app'
+require 'pry'
 
 module LastWillFile
   # Web controller for LastWillFile API
@@ -31,6 +32,7 @@ module LastWillFile
           routing.halt 500, { message: 'API server error' }.to_json
         end
       end
+      
     end
   end
 end

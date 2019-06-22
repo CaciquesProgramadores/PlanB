@@ -136,7 +136,7 @@ describe 'Test Note Handling' do
       
       header 'AUTHORIZATION', auth_header(@account_data)
       put 'api/v1/notes', updated.to_json
-      binding.pry
+      #binding.pry
       _(last_response.status).must_equal 201
       _(last_response.header['Location'].size).must_be :>, 0
     end
@@ -147,10 +147,35 @@ describe 'Test Note Handling' do
 
       header 'AUTHORIZATION', auth_header(@account_data)
       delete 'api/v1/notes', (data.id).to_json
-      binding.pry
+      #binding.pry
 
       _(last_response.status).must_equal 201
       _(last_response.header['Location'].size).must_be :>, 0
     end
+  end
+
+  describe 'Sending invitation to Inheritor' do
+    before do
+      @proj = @account.add_owned_note(DATA[:notes][0])
+      @doc_data = DATA[:inheritors][1]
+    end
+
+    it 'HAPPY: should be able to send when invitation_info is correct' do
+      header 'AUTHORIZATION', auth_header(@account_data)
+      post "api/v1/notes/#{@proj.id}/invitation", @doc_data.to_json
+      _(last_response.status).must_equal 202
+      _(last_response.header['Location'].size).must_be :>, 0
+      
+    end
+
+    #@doc_data[:emails] = ""
+    it 'BAD SENDING EMAIL: should not send with incorrect Invitation Info' do
+      header 'AUTHORIZATION', auth_header(@wrong_account_data)
+      post "api/v1/notes/#{@proj.id}/invitation", @doc_data.to_json
+
+      _(last_response.status).must_equal 403
+      _(last_response.header['Location']).must_be_nil
+    end
+    binding.pry
   end
 end

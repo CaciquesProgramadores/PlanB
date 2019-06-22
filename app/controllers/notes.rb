@@ -85,6 +85,29 @@ module LastWillFile
             routing.halt 500, { message: 'API server error' }.to_json
           end
         end
+
+        # POST api/v1/notes/[note_id]/invitation
+        routing.on ('invitation') do
+          #binding.pry
+          @invitation_info = JsonRequestBody.parse_symbolize(request.body.read)
+          
+          routing.post do
+            #binding.pry
+            InviteInheritor.new(Api.config, @auth, @invitation_info).call
+
+            response.status = 202
+            #binding.pry
+            { message: 'Invitation email sent' }.to_json
+            
+          rescue InviteInheritor::InvalidInvitation => e
+            #binding.pry
+            routing.halt 400, { message: e.message }.to_json
+          rescue StandardError => e
+            #binding.pry
+            puts "ERROR SENDING EMAIL INVITATION: #{e.inspect}"
+            routing.halt 500
+          end
+        end
       end
 
       routing .is do
