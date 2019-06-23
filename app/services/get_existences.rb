@@ -19,7 +19,7 @@ module LastWillFile
 
     def self.call(auth:, account_id:)
       # get notes where I m the executer
-      authorises = Account.find(id: account_id).authorises
+      authorises = Account.find(id: account_id).executors
       puts "authorises"
       puts authorises
       owner_ids = []
