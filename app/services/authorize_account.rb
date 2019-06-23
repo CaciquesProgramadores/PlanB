@@ -11,12 +11,15 @@ module LastWillFile
       end
 
       def self.call(auth:, username:, auth_scope:)
+        puts 'Entro 1'
         account = Account.first(username: username)
+        puts 'Entro 2'
         policy = AccountPolicy.new(auth[:account], account)
+        puts 'Entro 3'
         policy.can_view? ? account : raise(ForbiddenError)
-
+        puts 'Entro 4'
         raise ForbiddenError unless policy.can_view?
-
+        puts 'Entro 5'
         account_and_token(account, auth_scope)
       end
 
