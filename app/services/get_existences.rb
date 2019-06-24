@@ -20,22 +20,17 @@ module LastWillFile
     def self.call(auth:, account_id:)
       # get notes where I m the executer
       authorises = Account.find(id: account_id).executors
-      puts "authorises"
-      puts authorises
       owner_ids = []
       authorises.each do |row|
-        owner_ids.push(Note.find(id: row['note_id']).owner_id)
+        note = Note.find(id: row['note_id'])
+        owner_ids.push(note.owner_id)
       end
-      puts "owner_ids"
-      puts owner_ids
       # get the emails for the existences
       emails = []
       owner_ids.each do |i|
         emails.push(Account.find(id: i).email)
       end
 
-      puts "emails"
-      puts emails
       # get existences
       # existences = []
       # emails.each do |e|
