@@ -52,3 +52,5 @@ end
 group :development, :test do
   gem 'rerun'
 end
+
+gem 'simplecov', require: false, group: :test
