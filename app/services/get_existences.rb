@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 require 'pry'
+require 'date'
+
+#Name of the common module
 module LastWillFile
-  # Add a collaborator to another owner's existing note
+  # get the available existences in the database for one specific account
   class GetExistencesQuery
     # Error for owner cannot be executer
     class ForbiddenError < StandardError
@@ -18,7 +21,6 @@ module LastWillFile
     end
 
     def self.call(auth:, account_id:)
-      # get notes where I m the executer
       notes = Account.first(id: account_id).executors
       existences = []
       costumers = []
@@ -27,7 +29,10 @@ module LastWillFile
         existences.push(row.title)
         account = Account.first(id: row.owner.id)
         existence = Existence.first(owner_id: row.owner.id)
-        costumers.push({title: row.title, name: account.email, life: existence.timer})
+
+        less = Date.today - existence.updated_at
+
+        costumers.push({title: row.title, name: account.email, time: existence.timer, death: less})
       end
 
       costumers
