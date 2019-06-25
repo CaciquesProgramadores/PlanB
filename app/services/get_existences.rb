@@ -19,10 +19,11 @@ module LastWillFile
 
     def self.call(auth:, account_id:)
       # get notes where I m the executer
-      authorises = Account.find(id: account_id).executors
+      authorises = Account.first(id: account_id).executors
       owner_ids = []
       puts 'hello q1'
-      puts authorises[0]['note_id']
+      puts account_id
+      puts authorises
       puts 'hello 2'
 
       authorises.each do |row|
