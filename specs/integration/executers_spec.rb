@@ -8,6 +8,51 @@ describe 'Test Executers Handling' do
   before do
     wipe_database
 
+    DATA[:accounts].each do |account_data|
+      LastWillFile::Account.create(account_data)
+    end
+
+    note_data = DATA[:notes].first
+
+    @owner_data = DATA[:accounts][0]
+    @owner = LastWillFile::Account.all[0]
+    @executor = LastWillFile::Account.all[1]
+    @note = @owner.add_owned_note(note_data)
+  end
+
+  it 'HAPPY: should be able to add a executor to a note' do
+    auth = authorization(@owner_data)
+
+    LastWillFile::AddExecutor.call(
+      auth:         auth,
+      project:      @note,
+      collab_email: @executor.email
+    )
+
+    _(@executor.notes.count).must_equal 1
+    _(@executor.notes.first).must_equal @note
+  end
+
+  it 'BAD: should not add owner as a executor' do
+    auth = LastWillFile::AuthenticateAccount.call(
+      username: @owner_data['username'],
+      password: @owner_data['password']
+    )
+
+    proc {
+      LastWillFile::AddExecutor.call(
+        auth:         auth,
+        project:      @note,
+        collab_email: @owner.email
+      )
+    }.must_raise LastWillFile::AddExecutor::ForbiddenError
+  end
+end
+
+=begin
+  before do
+    wipe_database
+
     @account_data = DATA[:accounts][0]
     @another_account_data = DATA[:accounts][1]
     @wrong_account_data = DATA[:accounts][2]
@@ -56,13 +101,17 @@ describe 'Test Executers Handling' do
     end
   end
 
-  describe 'Removing executers from a note' do
+  describe 'Removing collaborators from a note' do
     it 'HAPPY: should remove with proper authorization' do
+      binding.pry
       @proj.add_executor(@another_account)
+      binding.pry
       req_data = { email: @another_account.email }
-
+      binding.pry
       header 'AUTHORIZATION', auth_header(@account_data)
       delete "api/v1/notes/#{@proj.id}/executors", req_data.to_json
+
+      binding.pry
 
       _(last_response.status).must_equal 200
     end
@@ -77,13 +126,16 @@ describe 'Test Executers Handling' do
     end
 
     it 'BAD AUTHORIZATION: should not remove invalid collaborator' do
+      #binding.pry
       req_data = { email: @another_account.email }
-
+      #binding.pry
       header 'AUTHORIZATION', auth_header(@account_data)
       delete "api/v1/notes/#{@proj.id}/executors", req_data.to_json
+      #binding.pry
 
       _(last_response.status).must_equal 403
-
+      
     end
   end
 end
+=end

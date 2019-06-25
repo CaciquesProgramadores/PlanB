@@ -5,7 +5,6 @@ require_relative '../spec_helper'
 describe 'Test AddExecutor service' do
   before do
     wipe_database
-
     DATA[:accounts].each do |account_data|
       LastWillFile::Account.create(account_data)
     end
@@ -23,7 +22,7 @@ describe 'Test AddExecutor service' do
 
     LastWillFile::AddExecutor.call(
       auth:         auth,
-      project:         @note,
+      project:      @note,
       collab_email: @executor.email
     )
 
@@ -40,7 +39,7 @@ describe 'Test AddExecutor service' do
     proc {
       LastWillFile::AddExecutor.call(
         auth:         auth,
-        project:         @note,
+        project:      @note,
         collab_email: @owner.email
       )
     }.must_raise LastWillFile::AddExecutor::ForbiddenError

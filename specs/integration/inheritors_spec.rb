@@ -123,3 +123,4 @@ describe 'Test Inheritor Handling' do
     end
   end
 end
+
