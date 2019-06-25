@@ -19,20 +19,18 @@ module LastWillFile
 
     def self.call(auth:, account_id:)
       # get notes where I m the executer
-      authorises = Account.first(id: account_id).executors
+      notes = Account.first(id: account_id).executors
       owner_ids = []
       puts 'hello q1'
-      puts account_id
-      puts authorises
-      puts authorises.count
-      puts authorises.owner.id
+
       puts 'hello 2'
 
-      authorises.each do |row|
-        note = Note.first(id: row['note_id'])
-        puts 'is null' if note == nil
-
-        owner_ids.push(note.owner.id)
+      notes.each do |row|
+        # note = Note.first(id: row['note_id'])
+        # puts 'is null' if note == nil
+        #
+        # owner_ids.push(note.owner.id)
+        puts row
       end
       # get the emails for the existences
       emails = []
