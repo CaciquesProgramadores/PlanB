@@ -25,6 +25,7 @@ module LastWillFile
       puts account_id
       puts authorises
       puts authorises.count
+      puts authorises.owner.id
       puts 'hello 2'
 
       authorises.each do |row|
