@@ -21,6 +21,10 @@ module LastWillFile
       # get notes where I m the executer
       authorises = Account.find(id: account_id).executors
       owner_ids = []
+      puts 'hello q1'
+      puts authorises[0]['note_id']
+      puts 'hello 2'
+
       authorises.each do |row|
         note = Note.first(id: row['note_id'])
         puts 'is null' if note == nil
