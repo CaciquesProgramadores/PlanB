@@ -26,21 +26,9 @@ module LastWillFile
       notes.each do |row|
         existences.push(row.title)
         account = Account.first(id: row.owner.id)
-        costumers.push({title: row.title, name: account.email})
+        existence = Existence.first(owner_id: row.owner.id)
+        costumers.push({title: row.title, name: account.email, life: existence.timer})
       end
-      # get the emails for the existences
-      # emails = []
-      # owner_ids.each do |i|
-      #   emails.push(Account.find(id: i).email)
-      # end
-      #
-      # # get existences
-      # # existences = []
-      # # emails.each do |e|
-      # #   existences.push(Account.find(email: e))
-      # # end
-      #
-      # emails
 
       costumers
     end
