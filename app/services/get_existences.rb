@@ -23,7 +23,7 @@ module LastWillFile
       owner_ids = []
       authorises.each do |row|
         note = Note.find(id: row['note_id'])
-        owner_ids.push(note.owner_id)
+        owner_ids.push(note[:owner_id])
       end
       # get the emails for the existences
       emails = []
