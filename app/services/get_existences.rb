@@ -21,30 +21,27 @@ module LastWillFile
       # get notes where I m the executer
       notes = Account.first(id: account_id).executors
       owner_ids = []
-      puts 'hello q1'
-
-      puts 'hello 2'
+      existences = []
 
       notes.each do |row|
-        # note = Note.first(id: row['note_id'])
-        # puts 'is null' if note == nil
-        #
-        # owner_ids.push(note.owner.id)
-        puts row.owner.id
+        owner_ids.push(row.owner.id)
+        existences.push(row.title)
       end
       # get the emails for the existences
-      emails = []
-      owner_ids.each do |i|
-        emails.push(Account.find(id: i).email)
-      end
-
-      # get existences
-      # existences = []
-      # emails.each do |e|
-      #   existences.push(Account.find(email: e))
+      # emails = []
+      # owner_ids.each do |i|
+      #   emails.push(Account.find(id: i).email)
       # end
+      #
+      # # get existences
+      # # existences = []
+      # # emails.each do |e|
+      # #   existences.push(Account.find(email: e))
+      # # end
+      #
+      # emails
 
-      emails
+
     end
   end
 end
