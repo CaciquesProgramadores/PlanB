@@ -30,7 +30,7 @@ module LastWillFile
         # puts 'is null' if note == nil
         #
         # owner_ids.push(note.owner.id)
-        puts row.title
+        puts row.owner.id
       end
       # get the emails for the existences
       emails = []
