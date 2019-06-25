@@ -37,7 +37,7 @@ module LastWillFile
 
         less = Date.today - existence.updated_at.to_date
 
-        puts less
+        puts less.to_i
 
         costumers.push({title: row.title, name: account.email, time: existence.timer, less: less})
       end
