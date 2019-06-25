@@ -21,7 +21,6 @@ module LastWillFile
       # get notes where I m the executer
       authorises = Account.find(id: account_id).executors
       owner_ids = []
-      puts authorises.instance_variables
       authorises.each do |row|
         note = Note.find(id: row['note_id'])
         owner_ids.push(note.owner.id)
