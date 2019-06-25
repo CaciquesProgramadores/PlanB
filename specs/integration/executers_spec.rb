@@ -56,7 +56,7 @@ describe 'Test Executers Handling' do
     end
   end
 
-  describe 'Removing collaborators from a project' do
+  describe 'Removing executers from a note' do
     it 'HAPPY: should remove with proper authorization' do
       @proj.add_executor(@another_account)
       req_data = { email: @another_account.email }
@@ -83,7 +83,7 @@ describe 'Test Executers Handling' do
       delete "api/v1/notes/#{@proj.id}/executors", req_data.to_json
 
       _(last_response.status).must_equal 403
-      
+
     end
   end
 end

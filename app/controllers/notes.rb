@@ -37,7 +37,7 @@ module LastWillFile
               inheritor_data: JSON.parse(routing.body.read)
               #binding.pry
             )
-            
+
             response.status = 201
             response['Location'] = "#{@doc_route}/#{new_inheritor.id}"
             { message: 'Inheritor saved', data: new_inheritor }.to_json
@@ -58,7 +58,7 @@ module LastWillFile
             executord = AddExecutor.call(auth: @auth, project: @req_note, collab_email: req_data['email'])
 
             { data: executord }.to_json
-            
+
           rescue AddExecutor::ForbiddenError => e
             #binding.pry
             routing.halt 403, { message: e.message }.to_json
@@ -89,14 +89,14 @@ module LastWillFile
         routing.on ('invitation') do
           #binding.pry
           @invitation_info = JsonRequestBody.parse_symbolize(request.body.read)
-          
+
           routing.post do
             InviteInheritor.new(Api.config, @auth, @invitation_info).call
 
             response.status = 202
 
             { message: 'Invitation email sent' }.to_json
-            
+
           rescue InviteInheritor::InvalidInvitation => e
             routing.halt 400, { message: e.message }.to_json
           rescue StandardError => e
@@ -138,7 +138,7 @@ module LastWillFile
         # PUT api/v1/notes/
         routing.put do
           new_data = JSON.parse(routing.body.read)
-         
+
           new_proj = UpdateNoteForOwner.call(
             auth: @auth, note_data: new_data
           )
@@ -157,7 +157,7 @@ module LastWillFile
         # DELETE api/v1/notes/
         routing.delete do
           req_data = JSON.parse(routing.body.read)
-         
+
           delnote = RemoveNote.call(
             req_username: @auth_account.username,
             note_id: req_data['id']
@@ -167,8 +167,10 @@ module LastWillFile
           data: executord }.to_json
         rescue RemoveNote::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
+          puts e.inspect
         rescue StandardError
           routing.halt 500, { message: 'API server error' }.to_json
+          puts e.inspect
         end
       end
     end

@@ -45,6 +45,7 @@ DATA[:accounts] = YAML.load File.read('app/db/seeds/accounts_seed.yml')
 DATA[:inheritors] = YAML.load File.read('app/db/seeds/inheritor_seeds.yml')
 DATA[:notes] = YAML.load File.read('app/db/seeds/notes_seeds.yml')
 DATA[:owners] = YAML.load File.read('app/db/seeds/owners_notes.yml')
+DATA[:existences] = YAML.load File.read('app/db/seeds/existences_seeds.yml')
 
 ## SSO fixtures
 GH_ACCOUNT_RESPONSE = YAML.load(
