@@ -34,7 +34,7 @@ module LastWillFile
         death = 'DEATH'
         death = 'LIVE' if less <= existence.timer
 
-        costumers.push({title: row.title, name: account.email, time: existence.timer, less: less, status: death})
+        costumers.push({title: row.title, name: account.email, less: less, status: death})
       end
 
       costumers
