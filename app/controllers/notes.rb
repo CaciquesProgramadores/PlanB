@@ -72,8 +72,8 @@ module LastWillFile
             executord = RemoveExecutor.call(
               #req_username: @auth_account.username,
               auth: @auth,
-              executors_email: req_data['email'],
-              note_id: note_id
+              project: @req_note,
+              collab_email: req_data['email']
             )
 
             { message: "#{executord.username} removed from note",

@@ -10,12 +10,12 @@ module LastWillFile
       end
     end
 
-    def self.call(req_username:, collab_email:, note_id:)
-      account = Account.first(username: req_username)
-      note = Note.first(id: note_id)
+    def self.call(auth:, collab_email:, project_id:)
+      account = Account.first(username: project_id)
+      note = Note.first(id: project_id)
       executor = Account.first(email: collab_email)
 
-      policy = ExecutorRequestPolicy.new(note, account, executor)
+      policy = ExecutorRequestPolicy.new(auth[:account], collab_email, auth[:scope])
       raise ForbiddenError unless policy.can_remove?
 
       note.remove_executor(executor)

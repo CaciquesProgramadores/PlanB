@@ -134,7 +134,7 @@ end
       #binding.pry
 
       _(last_response.status).must_equal 403
-      
+
     end
   end
 end

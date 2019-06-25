@@ -43,7 +43,7 @@ describe 'Test Note Handling' do
         _(result['data']).must_be_nil
       end
     end
-   
+
     it 'HAPPY: should be able to get details of a single notes' do
       proj = @account.add_owned_note(DATA[:notes][0])
 
@@ -133,7 +133,7 @@ describe 'Test Note Handling' do
       updated.title = "Updated title"
       updated.description = "Updated description."
       #binding.pry
-      
+
       header 'AUTHORIZATION', auth_header(@account_data)
       put 'api/v1/notes', updated.to_json
       #binding.pry
@@ -143,7 +143,7 @@ describe 'Test Note Handling' do
 
     it 'Happy: should able to delete note with owner permission only' do
       data = @account.add_owned_note(DATA[:notes][0])
-      
+
 
       header 'AUTHORIZATION', auth_header(@account_data)
       delete 'api/v1/notes', (data.id).to_json
@@ -166,7 +166,7 @@ describe 'Test Note Handling' do
       post "api/v1/notes/#{@proj.id}/invitation", @doc_data.to_json
       _(last_response.status).must_equal 202
       _(last_response.header['Location'].size).must_be :>, 0
-      
+
     end
 
     #@doc_data[:emails] = ""
