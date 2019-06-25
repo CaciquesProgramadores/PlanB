@@ -7,7 +7,7 @@ Sequel.migration do
   change do
     create_table(:existences) do
       primary_key :id
-      foreign_key :owner_id, :accounts
+      foreign_key :owner_id, table: :accounts
 
       String :email, null: false, unique: true
       int :timer

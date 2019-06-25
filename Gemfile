@@ -51,6 +51,7 @@ end
 
 group :development, :test do
   gem 'rerun'
+  # gem 'webmock'
 end
 
-# gem 'simplecov', require: false, group: :test
+gem 'simplecov', require: false, group: :test

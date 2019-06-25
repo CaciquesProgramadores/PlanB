@@ -6,7 +6,7 @@ require_relative './helpers.rb'
 
 # # rubocop:disable Metrics/BlockLength
 module LastWillFile
-  # Web controller for Credence API
+  # Web controller for LastWillFile API
   class Api < Roda
     plugin :halt
     plugin :all_verbs

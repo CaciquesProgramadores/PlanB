@@ -12,6 +12,7 @@ require 'yaml'
 require_relative 'test_load_all'
 
 def wipe_database
+  LastWillFile::Existence.map(&:destroy)
   LastWillFile::Inheritor.map(&:destroy)
   LastWillFile::Note.map(&:destroy)
   LastWillFile::Account.map(&:destroy)

@@ -4,7 +4,7 @@ require 'roda'
 require_relative './app'
 
 module LastWillFile
-  # Web controller for Credence API
+  # Web controller for LastWillFile API
   class Api < Roda
     route('accounts') do |routing| # rubocop:disable Metrics/BlockLength
       @account_route = "#{@api_root}/accounts"

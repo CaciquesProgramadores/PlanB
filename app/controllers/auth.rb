@@ -5,7 +5,7 @@ require_relative './app'
 require 'pry'
 
 module LastWillFile
-  # Web controller for Credence API
+  # Web controller for LastWillFile API
   class Api < Roda
     route('auth') do |routing| # rubocop:disable Metrics/BlockLength
       # All requests in this route require signed requests
@@ -46,7 +46,7 @@ module LastWillFile
       routing.post 'sso' do
         auth_account = AuthorizeSso.new(Api.config)
           .call(@request_data[:access_token])
-      
+
           { data: auth_account }.to_json
       rescue StandardError => error
         binding.pry
