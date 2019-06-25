@@ -23,6 +23,8 @@ module LastWillFile
       owner_ids = []
       authorises.each do |row|
         note = Note.first(id: row['note_id'])
+        puts 'is null' if note == nil
+
         owner_ids.push(note.owner.id)
       end
       # get the emails for the existences
