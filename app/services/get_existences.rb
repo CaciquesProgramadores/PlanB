@@ -30,9 +30,12 @@ module LastWillFile
         account = Account.first(id: row.owner.id)
         existence = Existence.first(owner_id: row.owner.id)
 
+        puts existence.updated_at
+        puts Date.today
+
         less = Date.today - existence.updated_at
 
-        costumers.push({title: row.title, name: account.email, time: existence.timer, death: less})
+        costumers.push({title: row.title, name: account.email, time: existence.timer})
       end
 
       costumers
