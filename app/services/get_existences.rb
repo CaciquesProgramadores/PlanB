@@ -22,10 +22,13 @@ module LastWillFile
       notes = Account.first(id: account_id).executors
       owner_ids = []
       existences = []
+      costumers = []
 
       notes.each do |row|
         owner_ids.push(row.owner.id)
         existences.push(row.title)
+        account = Account.first(id: account_id)
+        costumers.push({title: row.title, name: account.email})
       end
       # get the emails for the existences
       # emails = []
@@ -41,7 +44,7 @@ module LastWillFile
       #
       # emails
 
-      existences
+      costumers
     end
   end
 end
