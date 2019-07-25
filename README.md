@@ -8,7 +8,7 @@ It includes the following features:
   - create/edit user/patient decease confirmation/validation and control rules.
   - add/edit inheritor(s) or legal representative(s) notification and reminder.
   - add/edit/delete documents (types: Will, Photos, Memo, stories, notes..etc)
-  - use recent and reliable hashing, encryption and decryption algorithms
+  - use recent and reliable hashing, encryption and decryption algorithms for tokening, signing and verifying.
   - have both Web and mobile UI(coming soon)
   - etc..
 
