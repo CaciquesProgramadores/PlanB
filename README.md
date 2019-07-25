@@ -77,7 +77,3 @@ rake spec
 
 Before submitting pull requests, please check if specs, style, and dependency audits pass:
 
-```shell
-rake release?
-
-Reference: base on soumyaray ISS secuity repo @ https://github.com/ISS-Security/credence-api/tree/0_api_mvc
