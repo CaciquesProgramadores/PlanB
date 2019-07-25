@@ -9,7 +9,7 @@ It includes the following features:
   - add/edit inheritor(s) or legal representative(s) notification and reminder.
   - add/edit/delete documents (types: Will, Photos, Memo, stories, notes..etc)
   - use recent and reliable hashing, encryption and decryption algorithms
-  - have both Web and mobile UI
+  - have both Web and mobile UI(coming soon)
   - etc..
 
  Required development enviroment:
@@ -25,12 +25,12 @@ It includes the following features:
 
 All routes return Json
 - GET  `/`: Root route shows if Web API is running
-- GET  `api/v1/notes/[proj_id]/inheritor/[doc_id]`: Get a document
-- GET  `api/v1/notes/[proj_id]/inheritors`: Get list of documents for project
-- POST `api/v1/notes/[ID]/inheritors`: Upload document for a project
-- GET  `api/v1/notes/[ID]`: Get information about a project
-- GET  `api/v1/notes`: Get list of all projects
-- POST `api/v1/notes`: Create new project
+- GET  `api/v1/notes/[proj_id]/inheritor/[doc_id]`: Get a inheritor
+- GET  `api/v1/notes/[proj_id]/inheritors`: Get list of inheritors for particular note
+- POST `api/v1/notes/[ID]/inheritors`: create inheritor for a project
+- GET  `api/v1/notes/[ID]`: Get information about a note
+- GET  `api/v1/notes`: Get list of all note
+- POST `api/v1/notes`: Create new note
 
 #Note
 - Ensure to create dir app/db/store before attempting shell below.
